@@ -67,6 +67,36 @@ void displayBytes(uint8_t bytes[], uint32_t size, bool be = false){
 		}
 	}
 }
+/**
+*@brief reads the varInt, following https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer
+*@param f an input stream, where to read
+*@return a 64 bit int containing the int to read (even if it was a 8, 16 or 32 bit
+*/
+uint64_t varInt(ifstream &f){
+	uint8_t tmp;
+	uint64_t finalInt;//The int to read
+	f.read((char*)tmp, 1);
+	if(tmp < 0xfd){
+		finalInt = tmp;
+	}
+	else if(tmp == 0xfd){
+		uint16_t buff;
+		f.read((char*)buff, 2);
+		finalInt = buff;
+	}
+	else if(tmp == 0xfe){
+		uint32_t buff;
+		f.read((char*)buff, 4);
+		finalInt = buff;
+	}
+	else if(tmp == 0xff){
+		uint64_t buff;
+		f.read((char*)buff, 8);
+		finalInt = buff;
+	}
+	return finalInt;
+}
+
 
 int main(int argc, char * argv[]){
 	if(!(argc == 3)){
@@ -78,9 +108,9 @@ int main(int argc, char * argv[]){
 	uint32_t curBlock = 0;
 	string filename;
 	uint8_t *magicBytes, *nbBytes, *version, *prevHash, *merkle, *timestamp, *target, *nonce;
-	while(curBlock <= nbBlocks){
+	uint64_t txCount;
+	while(curBlock < nbBlocks){
 		filename = dirname+"/blk0000"+to_string(curBlock)+".dat"; // Concatenation of the block name + its number
-		cout<<filename<<endl;
 		ifstream blockFile(filename, ios::in | ios::binary | ios::ate);
 		if(blockFile.is_open()){
 			magicBytes = new uint8_t[4];// The magic bytes are on 4 bytes..
@@ -91,7 +121,6 @@ int main(int argc, char * argv[]){
 			timestamp = new uint8_t[4];// Back on our feets
 			target = new uint8_t[4];
 			nonce = new uint8_t[4];
-			
 			blockFile.seekg(0);
 			blockFile.read((char*)magicBytes, MAGIC_SIZE);
 			blockFile.read((char*)nbBytes, NBBYTES_SIZE);
@@ -101,11 +130,14 @@ int main(int argc, char * argv[]){
 			blockFile.read((char*)timestamp, TIMESTAMP_SIZE);
 			blockFile.read((char*)target, TARGET_SIZE);
 			blockFile.read((char*)nonce, NONCE_SIZE);
+			txCount = varInt(blockFile);
+			
 			blockFile.close();
 			
 			cout<<"                                       ----------"<<endl;
-			cout<<"                                     || BLOCK #1 ||"<<endl;
+			cout<<"                                     || BLOCK #"<<curBlock<<" ||"<<endl;
 			cout<<"                                       ----------"<<endl;
+			cout<<"-----------------METADATAs-------------------"<<endl;
 			cout<<hex<<"Magic byte : "<<addBytes(magicBytes, MAGIC_SIZE)<<"(little endian), "<<addBytes(magicBytes, MAGIC_SIZE, true)<<"(big endian)"<<endl;
 			uint32_t nb = addBytes(nbBytes, NBBYTES_SIZE, true);
 			uint32_t nb2 = addBytes(nbBytes, NBBYTES_SIZE);
@@ -120,9 +152,14 @@ int main(int argc, char * argv[]){
 			cout<<hex<<"Merkle root : ";
 			displayBytes(merkle, MERKLE_SIZE, true);
 			cout<<endl;
-			cout<<dec<<"Timestamp : "<<addBytes(timestamp, TIMESTAMP_SIZE)<<endl;
+			time_t t = 0;
+			t += addBytes(timestamp, TIMESTAMP_SIZE);
+			cout<<dec<<"Timestamp : "<<asctime(localtime(&t)); //No need to endl after asctime
 			cout<<hex<<"Target : "<<addBytes(target, TARGET_SIZE)<<endl;
 			cout<<dec<<"Nonce : "<<addBytes(nonce, NONCE_SIZE, true)<<endl;
+			cout<<hex<<txCount<<endl;
+			cout<<endl<<"-----------------DATA-------------------"<<endl;
+			
 			
 			cout<<endl<<endl<<endl;
 			

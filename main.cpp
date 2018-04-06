@@ -19,6 +19,7 @@ using namespace std;
 #define TIMESTAMP_SIZE 4
 #define TARGET_SIZE 4
 #define NONCE_SIZE 4
+#define TXVERSION_SIZE 4
 
 
 /**
@@ -72,9 +73,9 @@ void displayBytes(uint8_t bytes[], uint32_t size, bool be = false){
 *@param f an input stream, where to read
 *@return a 64 bit int containing the int to read (even if it was a 8, 16 or 32 bit
 */
-uint64_t varInt(std::ifstream &f){
+uint64_t varInt(ifstream &f){
 	uint64_t tmp, buff, finalInt;
-	f.read((char*)&tmp, 1); //The byte which give information about the length of int to read
+	f.read((char*)&tmp, 1); //The byte which give information about the length of int
 	if(tmp < 0xfd){
 		finalInt = tmp;
 	}
@@ -103,8 +104,8 @@ int main(int argc, char * argv[]){
 	const uint32_t nbBlocks = atoi(argv[2]);
 	uint32_t curBlock = 0;
 	string filename;
-	uint8_t *magicBytes, *nbBytes, *version, *prevHash, *merkle, *timestamp, *target, *nonce;
-	uint64_t txCount;
+	uint8_t *magicBytes, *nbBytes, *version, *prevHash, *merkle, *timestamp, *target, *nonce, *txVersion;
+	uint64_t txCount, txIn, txOut;
 	while(curBlock < nbBlocks){
 		filename = dirname+"/blk0000"+to_string(curBlock)+".dat"; // Concatenation of the block name + its number
 		ifstream blockFile(filename, ios::in | ios::binary | ios::ate);
@@ -117,6 +118,9 @@ int main(int argc, char * argv[]){
 			timestamp = new uint8_t[4];// Back on our feets
 			target = new uint8_t[4];
 			nonce = new uint8_t[4];
+			txVersion = new uint8_t[4];
+			
+			
 			blockFile.seekg(0);
 			blockFile.read((char*)magicBytes, MAGIC_SIZE);
 			blockFile.read((char*)nbBytes, NBBYTES_SIZE);
@@ -127,7 +131,7 @@ int main(int argc, char * argv[]){
 			blockFile.read((char*)target, TARGET_SIZE);
 			blockFile.read((char*)nonce, NONCE_SIZE);
 			txCount = varInt(blockFile);
-			
+			blockFile.read((char*)txVersion, TXVERSION_SIZE);
 			blockFile.close();
 			
 			cout<<"                                       ----------"<<endl;
@@ -155,7 +159,7 @@ int main(int argc, char * argv[]){
 			cout<<dec<<"Nonce : "<<addBytes(nonce, NONCE_SIZE, true)<<endl;
 			cout<<dec<<txCount<<endl;
 			cout<<endl<<"-----------------DATA-------------------"<<endl;
-			
+			cout<<dec<<addBytes(txVersion, TXVERSION_SIZE, true)<<endl;
 			
 			cout<<endl<<endl<<endl;
 			

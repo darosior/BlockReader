@@ -29,8 +29,8 @@ using namespace std;
 *@param be -> if set to true, for big endians
 *@return the sum of the bytes
 */
-uint32_t addBytes(uint8_t bytes[], uint32_t size, bool be = false){
-	uint32_t total;
+uint64_t addBytes(uint8_t bytes[], uint32_t size, bool be = false){
+	uint64_t total;
 	//If little endian
 	if(!be){
 		total = bytes[0];
@@ -40,9 +40,9 @@ uint32_t addBytes(uint8_t bytes[], uint32_t size, bool be = false){
 	}
 	//If big endian
 	else{
-		total = bytes[3];
+		total = bytes[size];
 		//Note that the type of i isnt uint anymore, because of i>=0, i--
-		for(int32_t i = 2; i >= 0; i--){
+		for(int32_t i = size-1; i >= 0; i--){
 			total = total<<8 | bytes[i];
 		}
 	}
@@ -195,18 +195,19 @@ int main(int argc, char * argv[]){
 				for(uint64_t j = 1; j<= txIn; j++){
 					inHash = new uint8_t[32];
 					blockFile.read((char*)inHash, 32);
-					inIndex = new uint8_t[8];
-					blockFile.read((char*)inIndex, 8);
+					inIndex = new uint8_t[4];
+					blockFile.read((char*)inIndex, 4);
 					inScriptLen = varInt(blockFile);
 					inScript = new uint8_t[inScriptLen];
-					inSeq = new uint8_t[8];
-					blockFile.read((char*)inSeq, 8);
+					blockFile.read((char*)inScript, inScriptLen);
+					inSeq = new uint8_t[4];
+					blockFile.read((char*)inSeq, 4);
 					
 					cout<<dec<<"	Input n° "<<j<<endl;
 					cout<<hex<<"		Hash : "<<addBytes(inHash, 32, true)<<endl;
 					cout<<hex<<"		Index : "<<addBytes(inIndex, 8, true)<<endl;
-					cout<<dec<<"		Script : ";
-					displayAnsiBytes(inScript, inScriptLen, true);
+					cout<<hex<<"		Script : ";
+					displayAnsiBytes(inScript, inScriptLen);
 					cout<<endl;
 					cout<<hex<<"		Sequence :"<<addBytes(inSeq, 8, true)<<endl;
 					
@@ -217,7 +218,6 @@ int main(int argc, char * argv[]){
 					
 				}
 				txOut = varInt(blockFile);
-				cout<<endl<<endl<<txOut<<endl;
 				for(uint64_t j = 1; j<= txOut; j++){
 					outValue = new uint8_t[8];
 					blockFile.read((char*)outValue, 8);
@@ -225,7 +225,8 @@ int main(int argc, char * argv[]){
 					outScript = new uint8_t[outScriptLen];
 					
 					cout<<dec<<"	Output n° "<<j<<endl;
-					cout<<dec<<"		Value : "<<addBytes(outValue, 8, true)<<" Satoshis"<<endl;
+					cout<<dec<<"		Value : "<<addBytes(outValue, 8, true);
+					cout<<" Satoshis"<<endl;
 					cout<<dec<<"		Script : ";
 					displayAnsiBytes(outScript, outScriptLen, true);
 					cout<<endl;

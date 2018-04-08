@@ -1,0 +1,58 @@
+Block #0 {
+	Magic byte : "f9beb4d9";
+	Nb of bytes : "285";
+	header {
+		Version number : "1";
+		Previous block hash : "000000000000000000000000000000000";
+		Merkle root : "04a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b";
+		Timestamp : Wed Feb 26 10:35:05 1992
+		Target : "ffff001d";
+		Nonce : "2083236893";
+		Number of transactions : "1";
+	Transaction n° 1 : {
+		Version : "1";
+		Input n° 1 : {
+			Hash : "0";
+			Index : "7f38ffffffff";
+			Script : "4973101112606326532";
+			Script (Asci) : ".......EThe Times 03/Jan/2009 Chancellor on brink of second bailout for banks";
+			Sequence : "7f38ffffffff";
+		}
+		Output n° 1";
+			Value : "5000000000 Satoshis";
+			Script : "7f38dd09db58";
+			Script (Asci): ".......................................................8...X...8...X";
+		}
+		Lock time : "942919844929";
+	}
+}
+
+Block #1 {
+	Magic byte : "f9beb4d9";
+	Nb of bytes : "215";
+	header {
+		Version number : "240518168577";
+		Previous block hash : "00000b9b03c04b2fe21b4f7a2fa89eb643852573c3a1748653e2019f01c";
+		Merkle root : "0bc15f9dcbe637c187bb9424757b14637316613630126fc396c22e8b8906ea";
+		Timestamp : Mon Apr 14 12:39:05 2031
+		Target : "ffff001d";
+		Nonce : "241470010652";
+		Number of transactions : "1";
+	Transaction n° 1 : {
+		Version : "240518168577";
+		Input n° 1 : {
+			Hash : "0";
+			Index : "7f38ffffffff";
+			Script : "29837571613785860";
+			Script (Asci) : "......j";
+			Sequence : "7f38ffffffff";
+		}
+		Output n° 1";
+			Value : "5000000000 Satoshis";
+			Script : "7f38dd09db58";
+			Script (Asci): "........................$.C"....Ih.r";. ....:...2..2...8...X...8...X";
+		}
+		Lock time : "941742687297";
+	}
+}
+

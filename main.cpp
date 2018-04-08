@@ -161,18 +161,22 @@ int main(int argc, char * argv[]){
 			blockFile.read((char*)nonce, NONCE_SIZE);
 			txCount = varInt(blockFile);
 			
-			
-			cout<<"                                       ----------"<<endl;
-			cout<<"                                     || BLOCK #"<<curBlock<<" ||"<<endl;
-			cout<<"                                       ----------"<<endl;
-			cout<<"-----------------METADATAs-------------------"<<endl;
+			cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			cout<<"*******************************************************************************"<<endl;
+			cout<<"                                  ----------"<<endl;
+			cout<<"                                || BLOCK #"<<curBlock<<" ||"<<endl;
+			cout<<"                                  ----------"<<endl;
+			cout<<endl;
+			cout<<"-----------------------------------METADATAs-----------------------------------"<<endl;
 			cout<<hex<<"Magic byte : "<<addBytes(magicBytes, MAGIC_SIZE)<<"(little endian), "<<addBytes(magicBytes, MAGIC_SIZE, true)<<"(big endian)"<<endl;
 			uint32_t nb = addBytes(nbBytes, NBBYTES_SIZE, true);
 			//uint32_t nb2 = addBytes(nbBytes, NBBYTES_SIZE);
 			cout<<hex<<"Nb of bytes : "<< nb <<" (="<<dec<< nb <<" in dec) => little endian"<<endl;
 			//cout<<hex<<"Nb of bytes : "<< nb2 <<" (="<<dec<< nb2 <<" in dec) => big endian"<<endl;
+			cout<<endl<<"-------------------------------------------------------------------------------"<<endl;
+			cout<<endl;
 			
-			cout<<endl<<"-----------------HEADER-------------------"<<endl;
+			cout<<endl<<"-------------------------------------HEADER------------------------------------"<<endl;
 			cout<<hex<<"Version number : "<<addBytes(version, VERSION_SIZE, true)<<endl;
 			cout<<hex<<"Previous block hash : ";
 			displayBytes(prevHash, PREVHASH_SIZE, true);
@@ -186,7 +190,10 @@ int main(int argc, char * argv[]){
 			cout<<hex<<"Target : "<<addBytes(target, TARGET_SIZE)<<endl;
 			cout<<dec<<"Nonce : "<<addBytes(nonce, NONCE_SIZE, true)<<endl;
 			cout<<dec<<"Number of transactions : "<<txCount<<endl;
-			cout<<endl<<"-----------------DATA-------------------"<<endl;
+			cout<<endl<<"-------------------------------------------------------------------------------"<<endl;
+			cout<<endl;
+			
+			cout<<endl<<"--------------------------------------DATA-------------------------------------"<<endl;
 			for(uint64_t i = 1; i <= txCount; i++){
 				blockFile.read((char*)txVersion, TXVERSION_SIZE);
 				cout<<dec<<"Transaction n° "<<i;
@@ -206,7 +213,8 @@ int main(int argc, char * argv[]){
 					cout<<dec<<"	Input n° "<<j<<endl;
 					cout<<hex<<"		Hash : "<<addBytes(inHash, 32, true)<<endl;
 					cout<<hex<<"		Index : "<<addBytes(inIndex, 8, true)<<endl;
-					cout<<hex<<"		Script : ";
+					cout<<dec<<"		Script : "<<addBytes(inScript, inScriptLen, true)<<endl;
+					cout<<hex<<"		Script (ANSI) : ";
 					displayAnsiBytes(inScript, inScriptLen);
 					cout<<endl;
 					cout<<hex<<"		Sequence :"<<addBytes(inSeq, 8, true)<<endl;
@@ -227,18 +235,32 @@ int main(int argc, char * argv[]){
 					cout<<dec<<"	Output n° "<<j<<endl;
 					cout<<dec<<"		Value : "<<addBytes(outValue, 8, true);
 					cout<<" Satoshis"<<endl;
-					cout<<dec<<"		Script : ";
+					cout<<dec<<"		Script : "<<addBytes(outScript, outScriptLen, true)<<endl;
+					cout<<dec<<"		Script (ANSI): ";
 					displayAnsiBytes(outScript, outScriptLen, true);
 					cout<<endl;
 					
 					delete[] outValue;
 					delete[] outScript;
 				}
+				lockTime = new uint8_t[4];
+				blockFile.read((char*)lockTime, 4);
+				cout<<endl<<"	Lock time : "<<dec<<addBytes(lockTime, 4, true)<<endl;
+				delete[] lockTime;
 				
-			}		
-			
+			}
+			cout<<endl<<"-------------------------------------------------------------------------------"<<endl;
 			cout<<endl<<endl<<endl;
-			
+			cout<<"*******************************************************************************"<<endl;
+			cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+			if(curBlock < nbBlocks-1){
+				cout<<"                                       |"<<endl;
+				cout<<"                                       |"<<endl;
+				cout<<"                                       |"<<endl;
+				cout<<"                                       |"<<endl;
+				cout<<"                                       |"<<endl;
+			}
+					
 			blockFile.close();
 			
 			delete[] magicBytes;

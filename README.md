@@ -9,3 +9,4 @@ The [test.txt](https://github.com/darosior/BlockReader/blob/master/test.txt) fil
 ```
 ./bin "directory which contains binaries" "nb of blocks to read" ("output file")  
 ```
+Not finished yet.

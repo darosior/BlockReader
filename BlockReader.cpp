@@ -11,6 +11,7 @@
 using namespace std;
 
 // From https://en.bitcoin.it/wiki/Block and http://codesuppository.blogspot.fr/2014/01/how-to-parse-bitcoin-blockchain.html
+// The number of bytes of each part
 #define MAGIC_SIZE 4
 #define NBBYTES_SIZE 4
 #define VERSION_SIZE 4
@@ -198,14 +199,14 @@ int main(int argc, char * argv[]){
 
 				ifstream blockFile(filename, ios::in | ios::binary);
 				if(blockFile.is_open()){
-					magicBytes = new uint8_t[4];// The magic bytes are on 4 bytes..
-					nbBytes = new uint8_t[4];// ...So is the number of bytes till in the file...
-					version = new uint8_t[4];// ...Just like the version number
-					prevHash = new uint8_t[32];// Becoming serious
-					merkle = new uint8_t[32];
-					timestamp = new uint8_t[4];// Back on our feets
-					target = new uint8_t[4];
-					nonce = new uint8_t[4];
+					magicBytes = new uint8_t[MAGIC_SIZE];// The magic bytes are on 4 bytes..
+					nbBytes = new uint8_t[NBBYTES_SIZE];// ...So is the number of bytes till in the file...
+					version = new uint8_t[VERSION_SIZE];// ...Just like the version number
+					prevHash = new uint8_t[PREVHASH_SIZE];// Becoming serious
+					merkle = new uint8_t[MERKLE_SIZE];
+					timestamp = new uint8_t[TIMESTAMP_SIZE];// Back on our feets
+					target = new uint8_t[TARGET_SIZE];
+					nonce = new uint8_t[NONCE_SIZE];
 					txVersion = new uint8_t[4];
 					
 					
@@ -292,7 +293,7 @@ int main(int argc, char * argv[]){
 						}
 						lockTime = new uint8_t[4];
 						blockFile.read((char*)lockTime, 4);
-						outputF<<"		Lock time : \""<<dec<<addBytes(lockTime, 4, true)<<"\";\n";
+						outputF<<"		Lock time : \""<<dec<<addBytes(lockTime, 4)<<"\";\n";
 						
 						outputF<<"	}\n";
 						
@@ -344,7 +345,7 @@ int main(int argc, char * argv[]){
 				filename = dirname+"/blk00"+to_string(curBlock)+".dat";
 			else if(curBlock < 10000)
 				filename = dirname+"/blk0"+to_string(curBlock)+".dat";
-
+			
 			ifstream blockFile(filename, ios::in | ios::binary);
 			if(blockFile.is_open()){
 				magicBytes = new uint8_t[4];// The magic bytes are on 4 bytes..

@@ -41,7 +41,7 @@ uint64_t addBytes(uint8_t bytes[], uint32_t size, bool be = false){
 	}
 	//If big endian
 	else{
-		total = bytes[size];
+		total = bytes[size-1];
 		//Note that the type of i isnt uint anymore, because of i>=0, i--
 		for(int32_t i = size-1; i >= 0; i--){
 			total = total<<8 | bytes[i];
@@ -224,7 +224,8 @@ int main(int argc, char * argv[]){
 					outputF<<"Block #"<<curBlock<<" {\n";
 					outputF<<hex<<"	Magic byte : \""<<addBytes(magicBytes, MAGIC_SIZE)<<"\";\n";
 					uint32_t nb = addBytes(nbBytes, NBBYTES_SIZE, true);
-					outputF<<dec<<"	Nb of bytes : \""<< nb <<"\";\n";
+					//We display the number in kilooBytes
+					outputF<<dec<<"	Nb of bytes (kB) : \""<< nb/1000 <<"\";\n";
 					
 					outputF<<"	header {\n";
 					outputF<<dec<<"		Version number : \""<<addBytes(version, VERSION_SIZE, true)<<"\";\n";
@@ -379,8 +380,7 @@ int main(int argc, char * argv[]){
 				cout<<"-----------------------------------METADATAs-----------------------------------"<<endl;
 				cout<<hex<<"Magic byte : "<<addBytes(magicBytes, MAGIC_SIZE)<<"(little endian), "<<addBytes(magicBytes, MAGIC_SIZE, true)<<"(big endian)"<<endl;
 				uint32_t nb = addBytes(nbBytes, NBBYTES_SIZE, true);
-				cout<<hex<<"Nb of bytes : "<< nb <<" (="<<dec<< nb <<" in dec) => little endian"<<endl;
-				//cout<<hex<<"Nb of bytes : "<< nb2 <<" (="<<dec<< nb2 <<" in dec) => big endian"<<endl;
+				cout<<hex<<"Nb of bytes : "<< nb <<" (="<<dec<< nb <<" in dec) => big endian"<<endl;
 				cout<<endl<<"-------------------------------------------------------------------------------"<<endl;
 				cout<<endl;
 				

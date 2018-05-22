@@ -379,7 +379,6 @@ int main(int argc, char * argv[]){
 				cout<<"-----------------------------------METADATAs-----------------------------------"<<endl;
 				cout<<hex<<"Magic byte : "<<addBytes(magicBytes, MAGIC_SIZE)<<"(little endian), "<<addBytes(magicBytes, MAGIC_SIZE, true)<<"(big endian)"<<endl;
 				uint32_t nb = addBytes(nbBytes, NBBYTES_SIZE, true);
-				//uint32_t nb2 = addBytes(nbBytes, NBBYTES_SIZE);
 				cout<<hex<<"Nb of bytes : "<< nb <<" (="<<dec<< nb <<" in dec) => little endian"<<endl;
 				//cout<<hex<<"Nb of bytes : "<< nb2 <<" (="<<dec<< nb2 <<" in dec) => big endian"<<endl;
 				cout<<endl<<"-------------------------------------------------------------------------------"<<endl;

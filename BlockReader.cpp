@@ -235,7 +235,7 @@ int main(int argc, char * argv[]){
 					displayBytes2File(outputF, merkle, MERKLE_SIZE, true);
 					outputF<<"\";\n";
 					time_t t = 0;
-					t += addBytes(timestamp, TIMESTAMP_SIZE);
+					t += addBytes(timestamp, TIMESTAMP_SIZE, true);
 					outputF<<dec<<"		Timestamp : "<<asctime(localtime(&t)); //No need to endl after asctime
 					outputF<<hex<<"		Target : \""<<addBytes(target, TARGET_SIZE)<<"\";\n";
 					outputF<<dec<<"		Nonce : \""<<addBytes(nonce, NONCE_SIZE, true)<<"\";\n";
@@ -394,7 +394,7 @@ int main(int argc, char * argv[]){
 				displayBytes(merkle, MERKLE_SIZE, true);
 				cout<<endl;
 				time_t t = 0;
-				t += addBytes(timestamp, TIMESTAMP_SIZE);
+				t += addBytes(timestamp, TIMESTAMP_SIZE, true);
 				cout<<dec<<"Timestamp : "<<asctime(localtime(&t)); //No need to endl after asctime
 				cout<<hex<<"Target : "<<addBytes(target, TARGET_SIZE)<<endl;
 				cout<<dec<<"Nonce : "<<addBytes(nonce, NONCE_SIZE, true)<<endl;

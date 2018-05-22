@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "Block.h"
 
 class Chain{
 	public:
@@ -18,6 +19,7 @@ class Chain{
 		std::string _dataDir; // Directory from which to load the blocks
 		int _nbToRead; // Number of blocks to read
 		std::string _outFile; // File to write
+		Block * _blocks;
 };
 
 #ENDIF

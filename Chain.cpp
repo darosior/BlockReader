@@ -1,4 +1,4 @@
-#include "Chain.h";
+#include "Chain.h"
 
 Chain::Chain(std::string dataDir, int nbToRead, std::string output){
 	if(dataDir.length() > 0)
@@ -12,4 +12,6 @@ Chain::Chain(std::string dataDir, int nbToRead, std::string output){
 		_outFile = output;
 	else
 		_outFile = "out.txt";
+		
+	_blocks = new Block[_nbToRead];
 }

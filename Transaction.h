@@ -1,6 +1,9 @@
 #IFNDEF TRANSACTION
 #DEFINE TRANSACTION
 
+#include "Input.h"
+#include "Output.h"
+
 struct Transaction{
 	uint64_t inputCount; // A var int
 	Input inputs[inputCount];

@@ -1,10 +1,7 @@
-#IFNDEF OUTPUT
-#DEFINE OUTPUT
+#include <cstdint>
 
-struct Input{
+struct Output{
 	uint64_t value; // In Satoshis
 	uint64_t scriptLength; // A var int
-	uint8_t script[scriptLength];
+	uint8_t * script;
 };
-
-#ENDIF

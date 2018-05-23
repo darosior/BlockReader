@@ -1,15 +1,10 @@
-#IFNDEF TRANSACTION
-#DEFINE TRANSACTION
-
-#include "Input.h"
-#include "Output.h"
+#include "Input.cpp"
+#include "Output.cpp"
 
 struct Transaction{
 	uint64_t inputCount; // A var int
-	Input inputs[inputCount];
+	Input * inputs;
 	uint64_t outputCount; // Another one
-	Output outputs[outputCount];
+	Output * outputs;
 	uint32_t lockTime;
 };
-
-#ENDIF

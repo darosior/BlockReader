@@ -19,10 +19,10 @@ Transaction.o: Input.o Output.o
 	g++ $(CPPFLAGS) $(SRCDIR)Transaction.cpp -c -o Transaction.o
 	
 Input.o:
-	g++ $(CPPFLAGS) $(SRCDIR)input.cpp -c -o input.o
+	g++ $(CPPFLAGS) $(SRCDIR)Input.cpp -c -o input.o
 	
 Output.o:
-	g++ $(CPPFLAGS) $(SRCDIR)output.cpp -c -o output.o
+	g++ $(CPPFLAGS) $(SRCDIR)Output.cpp -c -o output.o
 	
 clean:
 	rm *.o

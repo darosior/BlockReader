@@ -1,12 +1,12 @@
-#IFNDEF CHAIN
-#DEFINE CHAIN
+#ifndef CHAIN
+#define CHAIN
 
 #include <iostream>
 #include <stdlib.h>
 #include <string>
 #include <fstream>
 #include <vector>
-#include "Block.h"
+#include "Block.cpp"
 
 class Chain{
 	public:
@@ -28,4 +28,4 @@ class Chain{
 		void set_fileName(); // If end of blkxxxn.dat, sets filename to blkxxxx(n+1).dat
 };
 
-#ENDIF
+#endif

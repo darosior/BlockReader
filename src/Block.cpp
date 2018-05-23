@@ -1,12 +1,7 @@
-#IFNDEF BLOCK
-#DEFINE BLOCK
-
-#include "Header.h"
-#include "Transaction.h"
+#include "Header.cpp"
+#include "Transaction.cpp"
 
 struct Block{
 	Header header;
 	Transaction * transactions;
 };
-
-#ENDIF

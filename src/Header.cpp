@@ -1,5 +1,4 @@
-#IFNDEF HEADER
-#DEFINE HEADER
+#include <cstdint>
 
 struct Header{
 	uint32_t magicBytes;
@@ -13,5 +12,3 @@ struct Header{
 	uint32_t nonce;
 	uint64_t txCount;
 };
-
-#ENDIF

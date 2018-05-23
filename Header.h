@@ -2,16 +2,16 @@
 #DEFINE HEADER
 
 struct Header{
-	uint32_t _magicBytes;
-	uint32_t _blockLength;
-	uint32_t _version;
-	uint8_t * _prevHash;
-	uint8_t * _merkleRoot;
-	uint32_t _timestamp;
-	uint32_t _target;
-	uint32_t _difficulty;
-	uint32_t _nonce;
-	uint64_t _txCount;
+	uint32_t magicBytes;
+	uint32_t blockLength;
+	uint32_t version;
+	uint8_t * prevHash;
+	uint8_t * merkleRoot;
+	uint32_t timestamp;
+	uint32_t target;
+	uint32_t difficulty;
+	uint32_t nonce;
+	uint64_t txCount;
 };
 
 #ENDIF

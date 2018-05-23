@@ -46,6 +46,14 @@ void Chain::read(){
 			if(length > 96){
 				//We can go, we set the cursor to the right position and we begin to read
 				f.seekg(curPos);
+				f.read((*char)&_blocks[curBlock]->header->magicBytes, 4);
+				blockFile.read((char*)&_blocks[curBlock]->header->blockLength, 4);
+				blockFile.read((char*)&_blocks[curBlock]->header->version, 4);
+				blockFile.read((char*)&_blocks[curBlock]->header->prevHash, 32);
+				blockFile.read((char*)&_blocks[curBlock]->header->merkleRoot, 32);
+				blockFile.read((char*)&_blocks[curBlock]->header->timestamp, 4);
+				blockFile.read((char*)&_blocks[curBlock]->header->target, 4);
+				blockFile.read((char*)&_blocks[curBlock]->header->nonce, 4);
 			}
 			else{
 				//We need to take what we can..

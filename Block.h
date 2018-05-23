@@ -5,8 +5,8 @@
 #include "Transaction.h"
 
 struct Block{
-	Header _header;
-	Transaction * _transactions;
+	Header header;
+	Transaction * transactions;
 };
 
 #ENDIF

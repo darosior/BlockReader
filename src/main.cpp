@@ -23,15 +23,18 @@ int main(int argc, char * argv[]){
 		cout<<"Examples : "<<argv[0]<<" /path/to/data 10 test.txt"<<endl;
 		return 0;
 	}
-	Chain * chain;
-	//In this case, this is debug
-	if(argv[3] == "true" || argv[3] == "True"){
-		chain = new Chain(argv[1], atoi(argv[2]), true);
+	
+	// We create an instance of the chain reader with the correct folder and number of blocks to read
+	Chain chain(argv[1], atoi(argv[2]));
+	// We read them
+	chain.read();
+	// And write / display them
+	if(argv[3] == "true" || argv[3] == "True"){ //In this case, this is debug
+		chain.debug();
 	}
 	else{ // This is an output file
-		chain = new Chain(argv[1], atoi(argv[2]), argv[3]);
+		chain.write(argv[3]);
 	}
-	chain->read();
 
 	return 0;
 }

@@ -15,21 +15,31 @@
 class Chain{
 	public:
 	
-		Chain(std::string dataDir, int nbToRead, std::string output);
-		Chain(std::string dataDir, int nbToRead, bool debug); // Print results to console
+		Chain(std::string dataDir, int nbToRead);
 		
 		/**
  		*@brief reads the varInt, following https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer
 		*@param f an input stream, where to read
 		*@return a 64 bit int containing the int to read (even if it was a 8, 16 or 32 bit
 		*/
-		uint64_t Chain::readVarInt(std::ifstream &f);
+		uint64_t readVarInt(std::ifstream &f);
 		
 		/**
  		*@brief reads the specified number of blocks, and stock their spec in struct attributes
 		*/
 		void read();
 	
+		/**
+ 		*@brief Writes the blocks specifications in output file
+		*@param output the file to write
+		*/
+		void write(std::string output);	
+		
+		/**
+ 		*@brief Writes the blocks specifications to the console
+		*/
+		void debug();
+		
 	private:
 	
 		std::string _dataDir; // Directory from which to load the blocks

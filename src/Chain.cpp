@@ -133,6 +133,31 @@ void Chain::write(std::string output){
 
 
 void Chain::debug(){
-
+	for(int i = 0; i < _nbToRead; i++){
+		std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<std::endl;
+		std::cout<<"*******************************************************************************"<<std::endl;
+		std::cout<<"                                  ----------"<<std::endl;
+		std::cout<<"                                || BLOCK #"<<i<<" ||"<<std::endl;
+		std::cout<<"                                  ----------"<<std::endl;
+		std::cout<<std::endl;
+		std::cout<<"-----------------------------------METADATAs-----------------------------------"<<std::endl;
+		std::cout<<std::hex<<"Magic byte : "<<_blocks[i].header.magicBytes<<std::endl;
+		std::cout<<std::hex<<"Nb of bytes : "<<_blocks[i].header.blockLength<<std::endl;
+		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
+		std::cout<<std::endl;
+		
+		std::cout<<std::endl<<"-------------------------------------HEADER------------------------------------"<<std::endl;
+		std::cout<<std::hex<<"Version number : "<<_blocks[i].header.version<<std::endl;
+		std::cout<<std::hex<<"Previous block hash : "<<_blocks[i].header.prevHash<<std::endl;
+		std::cout<<std::hex<<"Merkle root : "<<_blocks[i].header.merkleRoot<<std::endl;
+		time_t t = 0;
+		t += _blocks[i].header.timestamp;
+		std::cout<<std::dec<<"Timestamp : "<<asctime(localtime(&t)); //No need to std::endl after asctime
+		std::cout<<std::hex<<"Target : "<<_blocks[i].header.target<<std::endl;
+		std::cout<<std::dec<<"Nonce : "<<_blocks[i].header.nonce<<std::endl;
+		std::cout<<std::dec<<"Number of transactions : "<<_blocks[i].header.txCount<<std::endl;
+		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
+		std::cout<<std::endl;
+	}
 }
 

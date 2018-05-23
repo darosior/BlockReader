@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
 #include <fstream>
 #include <vector>
 #include <bitset>
@@ -29,7 +29,8 @@ int main(int argc, char * argv[]){
 	// We read them
 	chain.read();
 	// And write / display them
-	if(argv[3] == "true" || argv[3] == "True"){ //In this case, this is debug
+	if(strcmp(argv[3], "true") == 0 || strcmp(argv[3], "True") == 0){ //In this case, this is debug
+		cout<<"a"<<endl;
 		chain.debug();
 	}
 	else{ // This is an output file

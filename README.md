@@ -1,3 +1,6 @@
+**_Currently rewriting the whole project, this is the mess please come back later_**
+
+
 # BlockReader
 BlockReader is a simple C++ reader(/parser) for Bitcoin binaries blk*.dat. You can store the output to a file (to specify as the last optionnal argument). The standard output displays more (meaningless) details. 
 

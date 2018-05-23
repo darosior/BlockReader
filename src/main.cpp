@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <cstdint>
 #include <time.h>
+#include "Chain.h"
 
 using namespace std;
 
@@ -22,16 +23,15 @@ int main(int argc, char * argv[]){
 		cout<<"Examples : "<<argv[0]<<" /path/to/data 10 test.txt"<<endl;
 		return 0;
 	}
-	else{
-		//In this case, this is debug
-		if(argv[3] == "true" || argv[3] == "True"){
-			Chain chain(argv[1], argv[2], true);
-		}
-		else{ // This is an output file
-			Chain chain(argv[1], argv[2], argv[3]);
-		}
+	Chain * chain;
+	//In this case, this is debug
+	if(argv[3] == "true" || argv[3] == "True"){
+		chain = new Chain(argv[1], atoi(argv[2]), true);
 	}
-	chain.read();
+	else{ // This is an output file
+		chain = new Chain(argv[1], atoi(argv[2]), argv[3]);
+	}
+	chain->read();
 
 	return 0;
 }

@@ -63,7 +63,7 @@ void Chain::read(){
 		std::ifstream f(_filename, std::ios::in | std::ios::binary | std::ios::ate);
 		if(f.is_open()){
 			//To get the size of the remaining part of the file
-			int length = f.tellg() - _curPos;
+			unsigned int length = f.tellg() - _curPos;
 			// Header max length = 96 bytes, cf doc (for the doc cf main.cpp or Readme.md)
 			if(length > 96){
 				//We can go, we set the cursor to the right position and we begin to read
@@ -90,12 +90,12 @@ void Chain::read(){
 					// We are now going to read the transactions. To do so we will initialize the tab containing them
 					_blocks[curBlock].transactions = new Transaction[_blocks[curBlock].header.txCount];
 					// And now for each transaction
-					for(int i = 0; i<_blocks[curBlock].header.txCount; i++){
+					for(unsigned int i = 0; i<_blocks[curBlock].header.txCount; i++){
 						f.read((char*)& _blocks[curBlock].transactions[i].version, 4);
 						_blocks[curBlock].transactions[i].inputCount = readVarInt(f);
 						_blocks[curBlock].transactions[i].inputs = new Input[_blocks[curBlock].transactions[i].inputCount];
 						// For each input
-						for(int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
+						for(unsigned int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].hash, 32);
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].index, 4);
 							_blocks[curBlock].transactions[i].inputs[j].scriptLength = readVarInt(f);
@@ -105,7 +105,7 @@ void Chain::read(){
 						// For each output
 						_blocks[curBlock].transactions[i].outputCount = readVarInt(f);
 						_blocks[curBlock].transactions[i].outputs = new Output[_blocks[curBlock].transactions[i].outputCount];
-						for(int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
+						for(unsigned int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
 							f.read((char*)& _blocks[curBlock].transactions[i].outputs[j].value, 8);
 							_blocks[curBlock].transactions[i].outputs[j].scriptLength = readVarInt(f);
 							f.read((char*)& _blocks[curBlock].transactions[i].outputs[j].script, _blocks[curBlock].transactions[i].outputs[j].scriptLength);
@@ -126,6 +126,19 @@ void Chain::read(){
 	}
 }
 
+void displayBytes(uint8_t bytes[], uint32_t size, bool be = false){
+	if(!be){
+		for(uint32_t i = 0; i < size; i++){
+			std::cout<<std::hex<<(int)bytes[i];
+		}
+	}
+	//If big endian
+	else{
+		for(int32_t i = size; i >= 0; i--){
+			std::cout<<std::hex<<(int)bytes[i];
+		}
+	}
+}
 
 void Chain::write(std::string output){
 	
@@ -148,7 +161,12 @@ void Chain::debug(){
 		
 		std::cout<<std::endl<<"-------------------------------------HEADER------------------------------------"<<std::endl;
 		std::cout<<std::hex<<"Version number : "<<_blocks[i].header.version<<std::endl;
-		std::cout<<std::hex<<"Previous block hash : "<<_blocks[i].header.prevHash<<std::endl;
+		std::cout<<std::hex<<"Previous block hash : ";
+		/*std::cout<<_blocks[i].header.prevHash;
+		for(unsigned int i=0; i<32; i++){
+			std::cout<<_blocks[i].header.prevHash[i];
+		}
+		std::cout<<std::endl;
 		std::cout<<std::hex<<"Merkle root : "<<_blocks[i].header.merkleRoot<<std::endl;
 		time_t t = 0;
 		t += _blocks[i].header.timestamp;
@@ -157,7 +175,7 @@ void Chain::debug(){
 		std::cout<<std::dec<<"Nonce : "<<_blocks[i].header.nonce<<std::endl;
 		std::cout<<std::dec<<"Number of transactions : "<<_blocks[i].header.txCount<<std::endl;
 		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
-		std::cout<<std::endl;
+		std::cout<<std::endl;*/
 	}
 }
 

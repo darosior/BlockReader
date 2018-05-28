@@ -28,6 +28,14 @@ class Chain{
  		*@brief reads the specified number of blocks, and stock their spec in struct attributes
 		*/
 		void read();
+		
+		/**
+		*@brief display all bytes the tab contains
+		*@param bytes -> a tab of bytes
+		*@param size -> nb of bytes
+		*@param be -> if set to true, for big endians
+		*/
+		void displayBytes(uint8_t bytes[], uint32_t size, bool be = false);
 	
 		/**
  		*@brief Writes the blocks specifications in output file

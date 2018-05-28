@@ -2,14 +2,14 @@
 
 Chain::Chain(std::string dataDir, int nbToRead){
 	if(dataDir.length() > 0)
-		_dataDir = dataDir;
+		_dataDir = dataDir+"/";
 	else
-		_dataDir = "./data"; // Default
+		_dataDir = "./data/"; // Default
 	
 	_nbToRead = nbToRead;
 	
 	_blocks = new Block[_nbToRead];
-	_filename = "blk00000.dat"; // First file
+	_filename = _dataDir+"blk00000.dat"; // First file
 	_curPos = 0;
 	_curFile = 0;
 }

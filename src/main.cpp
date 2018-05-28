@@ -30,7 +30,6 @@ int main(int argc, char * argv[]){
 	chain.read();
 	// And write / display them
 	if(strcmp(argv[3], "true") == 0 || strcmp(argv[3], "True") == 0){ //In this case, this is debug
-		cout<<"a"<<endl;
 		chain.debug();
 	}
 	else{ // This is an output file

@@ -61,7 +61,7 @@ void Chain::read(){
 	int curBlock = 0;
 	while(curBlock < _nbToRead - 1){ // -1 -> first block is 0
 		std::ifstream f(_filename, std::ios::in | std::ios::binary | std::ios::ate);
-		if(f.is_open()){
+		while(f.is_open()){
 			//To get the size of the remaining part of the file
 			unsigned int length = f.tellg() - _curPos;
 			// Header max length = 96 bytes, cf doc (for the doc cf main.cpp or Readme.md)
@@ -73,12 +73,18 @@ void Chain::read(){
 				_blocks[curBlock].header.merkleRoot = new uint8_t[32];
 				
 				f.read((char*)& _blocks[curBlock].header.magicBytes, 4);
+				std::cout<<f.tellg()<<std::endl;
 				f.read((char*)& _blocks[curBlock].header.blockLength, 4);
+				std::cout<<f.tellg()<<std::endl;
 				_curPos = f.tellg(); // To compare length of block with length of remaining data, see below
 				f.read((char*)& _blocks[curBlock].header.version, 4);
+				std::cout<<f.tellg()<<std::endl;
 				f.read((char*) _blocks[curBlock].header.prevHash, 32);
+				std::cout<<f.tellg()<<std::endl;
 				f.read((char*) _blocks[curBlock].header.merkleRoot, 32);
+				std::cout<<f.tellg()<<std::endl;
 				f.read((char*)& _blocks[curBlock].header.timestamp, 4);
+				std::cout<<f.tellg()<<std::endl;
 				f.read((char*)& _blocks[curBlock].header.target, 4);
 				f.read((char*)& _blocks[curBlock].header.nonce, 4);
 				_blocks[curBlock].header.txCount = readVarInt(f);
@@ -128,6 +134,7 @@ void Chain::read(){
 			else{
 				//We need to take what we can..
 			}
+			break;
 		}
 		curBlock++;
 	}
@@ -135,13 +142,13 @@ void Chain::read(){
 
 void Chain::displayBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/){
 	if(!be){
-		for(uint32_t i = 0; i < size; i++){
+		for(uint8_t i = 0; i < size; i++){
 			std::cout<<std::hex<<(int)bytes[i];
 		}
 	}
 	//If big endian
 	else{
-		for(int32_t i = size; i >= 0; i--){
+		for(int8_t i = size; i >= 0; i--){
 			std::cout<<std::hex<<(int)bytes[i];
 		}
 	}
@@ -172,8 +179,8 @@ void Chain::debug(){
 		displayBytes(_blocks[i].header.prevHash, 32);
 		std::cout<<std::endl;
 		std::cout<<std::hex<<"Merkle root : ";
-		displayBytes(_blocks[i].header.merkleRoot, 32);
-		std::cout<<std::endl;/*
+		displayBytes(_blocks[i].header.merkleRoot, 32, true);
+		std::cout<<std::endl;
 		time_t t = 0;
 		t += _blocks[i].header.timestamp;
 		std::cout<<std::dec<<"Timestamp : "<<asctime(localtime(&t)); //No need to std::endl after asctime
@@ -181,7 +188,7 @@ void Chain::debug(){
 		std::cout<<std::dec<<"Nonce : "<<_blocks[i].header.nonce<<std::endl;
 		std::cout<<std::dec<<"Number of transactions : "<<_blocks[i].header.txCount<<std::endl;
 		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
-		std::cout<<std::endl;*/
+		std::cout<<std::endl;
 	}
 }
 

@@ -59,7 +59,7 @@ uint64_t Chain::readVarInt(std::ifstream &f){
 
 void Chain::read(){
 	int curBlock = 0;
-	while(curBlock < _nbToRead){
+	while(curBlock < _nbToRead - 1){ // -1 -> first block is 0
 		std::ifstream f(_filename, std::ios::in | std::ios::binary | std::ios::ate);
 		if(f.is_open()){
 			//To get the size of the remaining part of the file
@@ -68,12 +68,16 @@ void Chain::read(){
 			if(length > 96){
 				//We can go, we set the cursor to the right position and we begin to read
 				f.seekg(_curPos);
+				
+				_blocks[curBlock].header.prevHash = new uint8_t[32];
+				_blocks[curBlock].header.merkleRoot = new uint8_t[32];
+				
 				f.read((char*)& _blocks[curBlock].header.magicBytes, 4);
 				f.read((char*)& _blocks[curBlock].header.blockLength, 4);
 				_curPos = f.tellg(); // To compare length of block with length of remaining data, see below
 				f.read((char*)& _blocks[curBlock].header.version, 4);
-				f.read((char*)& _blocks[curBlock].header.prevHash, 32);
-				f.read((char*)& _blocks[curBlock].header.merkleRoot, 32);
+				f.read((char*) _blocks[curBlock].header.prevHash, 32);
+				f.read((char*) _blocks[curBlock].header.merkleRoot, 32);
 				f.read((char*)& _blocks[curBlock].header.timestamp, 4);
 				f.read((char*)& _blocks[curBlock].header.target, 4);
 				f.read((char*)& _blocks[curBlock].header.nonce, 4);
@@ -117,6 +121,9 @@ void Chain::read(){
 				else{
 				
 				}
+				
+				delete[] _blocks[curBlock].header.prevHash;
+				delete[] _blocks[curBlock].header.merkleRoot;
 			}
 			else{
 				//We need to take what we can..
@@ -126,7 +133,7 @@ void Chain::read(){
 	}
 }
 
-void displayBytes(uint8_t bytes[], uint32_t size, bool be = false){
+void Chain::displayBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/){
 	if(!be){
 		for(uint32_t i = 0; i < size; i++){
 			std::cout<<std::hex<<(int)bytes[i];
@@ -162,12 +169,11 @@ void Chain::debug(){
 		std::cout<<std::endl<<"-------------------------------------HEADER------------------------------------"<<std::endl;
 		std::cout<<std::hex<<"Version number : "<<_blocks[i].header.version<<std::endl;
 		std::cout<<std::hex<<"Previous block hash : ";
-		/*std::cout<<_blocks[i].header.prevHash;
-		for(unsigned int i=0; i<32; i++){
-			std::cout<<_blocks[i].header.prevHash[i];
-		}
+		displayBytes(_blocks[i].header.prevHash, 32);
 		std::cout<<std::endl;
-		std::cout<<std::hex<<"Merkle root : "<<_blocks[i].header.merkleRoot<<std::endl;
+		std::cout<<std::hex<<"Merkle root : ";
+		displayBytes(_blocks[i].header.merkleRoot, 32);
+		std::cout<<std::endl;/*
 		time_t t = 0;
 		t += _blocks[i].header.timestamp;
 		std::cout<<std::dec<<"Timestamp : "<<asctime(localtime(&t)); //No need to std::endl after asctime

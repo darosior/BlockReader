@@ -37,7 +37,15 @@ class Chain{
 		*@param be -> if set to true, for big endians
 		*/
 		void displayBytes(uint8_t bytes[], uint32_t size, bool be = false);
-	
+		
+		/**
+		*@brief display all bytes the tab contains, but trying to convert them as character (using ASCI table) if it's impossible, displays "."
+		*@param bytes -> a tab of bytes
+		*@param size -> nb of bytes
+		*@param be -> if set to true, for big endians
+		*/
+		void displayAsciBytes(uint8_t bytes[], uint32_t size, bool be = false);
+		
 		/**
  		*@brief Writes the blocks specifications in output file
 		*@param output the file to write

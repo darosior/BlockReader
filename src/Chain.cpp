@@ -17,6 +17,17 @@ Chain::Chain(std::string dataDir, int nbToRead){
 Chain::~Chain(){
 	//To delete the memory allocated
 	for(int i = 0; i < _nbToRead; i++){
+		for(int j = 0; j < _blocks[i].header.txCount; j++){
+			for(int k = 0; k < _blocks[i].transactions[j].inputCount; k++){
+				delete[] _blocks[i].transactions[j].inputs[k].hash;
+				delete[] _blocks[i].transactions[j].inputs[k].script;
+			}
+			for(int k = 0; k < _blocks[i].transactions[j].outputCount; k++){
+				delete[] _blocks[i].transactions[j].outputs[k].script;
+			}
+			delete[] _blocks[i].transactions[j].inputs;
+			delete[] _blocks[i].transactions[j].outputs;
+		}
 		delete[] _blocks[i].header.prevHash;
 		delete[] _blocks[i].header.merkleRoot;
 	}
@@ -114,9 +125,14 @@ void Chain::read(){
 						_blocks[curBlock].transactions[i].inputs = new Input[_blocks[curBlock].transactions[i].inputCount];
 						// For each input
 						for(unsigned int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
+							_blocks[curBlock].transactions[i].inputs[j].hash = new uint8_t[32];
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].hash, 32);
+							
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].index, 4);
+							
 							_blocks[curBlock].transactions[i].inputs[j].scriptLength = readVarInt(f);
+							_blocks[curBlock].transactions[i].inputs[j].script = new uint8_t[_blocks[curBlock].transactions[i].inputs[j].scriptLength];
+							
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].script, _blocks[curBlock].transactions[i].inputs[j].scriptLength);
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].sequence, 4);
 						}
@@ -125,7 +141,10 @@ void Chain::read(){
 						_blocks[curBlock].transactions[i].outputs = new Output[_blocks[curBlock].transactions[i].outputCount];
 						for(unsigned int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
 							f.read((char*)& _blocks[curBlock].transactions[i].outputs[j].value, 8);
+							
 							_blocks[curBlock].transactions[i].outputs[j].scriptLength = readVarInt(f);
+							_blocks[curBlock].transactions[i].outputs[j].script = new uint8_t[_blocks[curBlock].transactions[i].outputs[j].scriptLength];
+							
 							f.read((char*)& _blocks[curBlock].transactions[i].outputs[j].script, _blocks[curBlock].transactions[i].outputs[j].scriptLength);
 						}
 						// And finally the lock time
@@ -155,8 +174,35 @@ void Chain::displayBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/){
 	}
 	//If big endian
 	else{
-		for(int8_t i = size; i >= 0; i--){
+		//Note that the type of i isnt uint anymore, because of i>=0, i--
+		for(int16_t i = size; i >= 0; i--){
 			std::cout<<std::hex<<(int)bytes[i];
+		}
+	}
+}
+
+/**
+*@brief display all bytes the tab contains, but trying to convert them as character (using ASCI table) if it's impossible, displays "."
+*@param bytes -> a tab of bytes
+*@param size -> nb of bytes
+*@param be -> if set to true, for big endians
+*/
+void Chain::displayAsciBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/){
+	if(!be){
+		for(uint8_t i = 0; i < size; i++){
+			if(bytes[i] <= 126  && bytes[i] >= 32)
+				std::cout<<std::hex<<bytes[i];
+			else
+				std::cout<<".";
+		}
+	}
+	//If big endian
+	else{
+		for(int16_t i = size; i >= 0; i--){
+			if(bytes[i] <= 126  && bytes[i] >= 32)
+				std::cout<<std::hex<<bytes[i];
+			else
+				std::cout<<".";
 		}
 	}
 }
@@ -176,7 +222,7 @@ void Chain::debug(){
 		std::cout<<std::endl;
 		std::cout<<"-----------------------------------METADATAs-----------------------------------"<<std::endl;
 		std::cout<<std::hex<<"Magic byte : "<<_blocks[i].header.magicBytes<<std::endl;
-		std::cout<<std::hex<<"Nb of bytes : "<<_blocks[i].header.blockLength<<std::endl;
+		std::cout<<std::dec<<"Nb of bytes : "<<_blocks[i].header.blockLength<<std::endl;
 		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
 		std::cout<<std::endl;
 		
@@ -196,6 +242,35 @@ void Chain::debug(){
 		std::cout<<std::dec<<"Number of transactions : "<<_blocks[i].header.txCount<<std::endl;
 		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
 		std::cout<<std::endl;
+		for(unsigned int j = 0; j<_blocks[i].header.txCount; j++){
+			std::cout<<std::dec<<"Transaction n° "<<j+1<<std::endl;
+			std::cout<<std::dec<<"	Version : "<<_blocks[i].transactions[j].version<<std::endl;
+			std::cout<<std::dec<<"	AAA : "<<_blocks[i].transactions[j].inputCount<<std::endl;
+			for(unsigned int k = 0; k<_blocks[i].transactions[j].inputCount; k++){
+				std::cout<<std::dec<<"	Input n° "<<k+1<<std::endl;
+				std::cout<<std::hex<<"		Hash : ";
+				displayBytes(_blocks[i].transactions[j].inputs[k].hash, 32);
+				std::cout<<std::endl;
+				std::cout<<std::hex<<"		Index : "<<_blocks[i].transactions[j].inputs[k].index<<std::endl;/*
+				std::cout<<std::dec<<"		Script : ";
+				displayBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
+				std::cout<<std::endl;
+				std::cout<<std::hex<<"		Script (Asci) : ";
+				displayAsciBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
+				std::cout<<std::endl;
+				std::cout<<std::hex<<"		Sequence :"<<_blocks[i].transactions[j].inputs[k].sequence<<std::endl;*/
+				std::cout<<std::dec<<"	AAA : "<<_blocks[i].transactions[j].inputCount<<std::endl;
+			}
+			for(unsigned int k = 0; k<_blocks[i].transactions[j].outputCount; k++){
+				std::cout<<std::dec<<"	Output n° "<<k+1<<std::endl;
+				std::cout<<std::dec<<"		Value : "<<_blocks[i].transactions[j].outputs[k].value<<std::endl;
+				std::cout<<std::dec<<"		Script : ";
+				displayBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+				std::cout<<std::endl;
+				std::cout<<std::hex<<"		Script (Asci) : ";
+				displayAsciBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+			}
+		}
 	}
 }
 

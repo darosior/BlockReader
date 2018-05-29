@@ -16,6 +16,7 @@ class Chain{
 	public:
 	
 		Chain(std::string dataDir, int nbToRead);
+		~Chain();
 		
 		/**
  		*@brief reads the varInt, following https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer

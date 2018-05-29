@@ -14,6 +14,14 @@ Chain::Chain(std::string dataDir, int nbToRead){
 	_curFile = 0;
 }
 
+Chain::~Chain(){
+	//To delete the memory allocated
+	for(int i = 0; i < _nbToRead; i++){
+		delete[] _blocks[i].header.prevHash;
+		delete[] _blocks[i].header.merkleRoot;
+	}
+}
+
 
 void Chain::set_fileName(){
 	if(_curFile < 10)
@@ -30,7 +38,7 @@ void Chain::set_fileName(){
 
 
 /**
-*@brief reads the varInt, following https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer
+*@brief reads a varInt, following https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer
 *@param f an input stream, where to read
 *@return a 64 bit int containing the int to read (even if it was a 8, 16 or 32 bit
 */
@@ -127,9 +135,8 @@ void Chain::read(){
 				else{
 				
 				}
-				
-				delete[] _blocks[curBlock].header.prevHash;
-				delete[] _blocks[curBlock].header.merkleRoot;
+
+				_curPos = f.tellg();
 			}
 			else{
 				//We need to take what we can..

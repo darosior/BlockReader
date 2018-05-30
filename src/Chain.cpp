@@ -210,11 +210,87 @@ void Chain::displayAsciBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/
 }
 
 void Chain::write(std::string output){
-	
+	std::ofstream f(output, std::ios::out);
+	if(f.is_open()){
+		for(int i = 0; i < _nbRead; i++){
+			f<<std::dec<<"BLOCK #"<<i<<" : {"<<std::endl;
+			f<<std::hex<<"	Magic byte : \""<<_blocks[i].header.magicBytes<<"\";"<<std::endl;
+			f<<std::dec<<"	Nb of bytes : \""<<_blocks[i].header.blockLength<<"\";"<<std::endl;
+			f<<"	header : {"<<std::endl;
+			f<<std::hex<<"		Version number : "<<_blocks[i].header.version<<"\";"<<std::endl;
+			f<<std::hex<<"		Previous block hash : \"";
+			displayBytes(_blocks[i].header.prevHash, 32, true);
+			f<<"\";"<<std::endl;
+			f<<std::hex<<"		Merkle root : \"";
+			displayBytes(_blocks[i].header.merkleRoot, 32, true);
+			f<<"\";"<<std::endl;
+			time_t t = 0;
+			t += _blocks[i].header.timestamp;
+			f<<std::dec<<"		Timestamp : \""<<asctime(localtime(&t)); //No need to std::endl after asctime
+			f<<std::hex<<"		Target : \""<<_blocks[i].header.target<<"\";"<<std::endl;
+			f<<std::dec<<"		Nonce : \""<<_blocks[i].header.nonce<<"\";"<<std::endl;
+			f<<std::dec<<"		Number of transactions : \""<<_blocks[i].header.txCount<<"\";"<<std::endl;
+			f<<<<"	};"<<std::endl;
+					
+			f<<"	Transactions : {"<<std::endl;
+			for(unsigned int j = 0; j<_blocks[i].header.txCount; j++){
+				f<<std::dec<<"		Transaction n° "<<j+1<<" : {"<<std::endl;
+				f<<std::dec<<"			Version : \""<<_blocks[i].transactions[j].version<<"\";"<<std::endl;
+				for(unsigned int k = 0; k<_blocks[i].transactions[j].inputCount; k++){
+					f<<std::dec<<"			Input n° "<<k+1<<" : {"<<std::endl;
+					f<<std::hex<<"				Hash : \"";
+					displayBytes(_blocks[i].transactions[j].inputs[k].hash, 32);
+					f<<std::endl;
+					f<<std::hex<<"				Index : \""<<_blocks[i].transactions[j].inputs[k].index<<"\";"<<std::endl;
+					f<<std::dec<<"				Script : \"";
+					displayBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
+					f<<std::endl;
+					f<<std::hex<<"				Script (Asci) : \"";
+					displayAsciBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
+					f<<std::endl;
+					f<<std::hex<<"				Sequence : \""<<_blocks[i].transactions[j].inputs[k].sequence<<"\";"<<std::endl;
+					f<<"			};"<<std::endl;
+				}
+				for(unsigned int k = 0; k<_blocks[i].transactions[j].outputCount; k++){
+					f<<std::dec<<"			Output n° "<<k+1<<" : {"<<std::endl;
+					f<<std::dec<<"				Value : \""<<_blocks[i].transactions[j].outputs[k].value<<"\";"<<std::endl;
+					f<<std::dec<<"		Script : \"";
+					displayBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+					f<<std::endl;
+					f<<std::hex<<"		Script (Asci) : \"";
+					displayAsciBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+					f<<"			};"<<std::endl;
+				}
+				f<<"			Locktime : \""<<_blocks[i].transactions[j].lockTime<<"\";"<<std::endl;
+				f<<"		};"<<std::endl;
+			}
+			f<<"	};"<<std::endl;
+			f<<"};"<<std::endl;
+			f<<std::endl;
+	}
+	else{
+		f<<"Problem with output file"<<std::endl;
+	}
 }
 
 
 void Chain::debug(){
+	// Nothing to comment in this part, I'll just display on the prompt everything read in the read function,
+	// for any question about the format see the read function or the doc.
+	// Display format :
+	// ~~~~~~~~~~~~~~~
+	// ***************
+	//     BLOCK n
+
+	// ---METADATAs---
+	// ---------------
+	// ---HEADER------
+	// ---------------
+	// ---DATA-------- (the transactions)
+	// ---------------
+	
+	// ***************
+	// ~~~~~~~~~~~~~~~
 	for(int i = 0; i < _nbRead; i++){
 		std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<std::endl;
 		std::cout<<"*******************************************************************************"<<std::endl;

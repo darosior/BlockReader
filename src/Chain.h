@@ -62,7 +62,6 @@ class Chain{
 		std::string _dataDir; // Directory from which to load the blocks
 		int _nbToRead; // Number of blocks to read
 		int _nbRead; // Number of blocks already read
-		std::string _outFile; // File to write
 		Block * _blocks;
 		std::string _filename; // Current file to read
 		int _curPos; // Position of the cursor in the file. Max file size = 2.8MB = 280 000 000 bytes, should fit in an int

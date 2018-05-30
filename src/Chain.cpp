@@ -7,6 +7,7 @@ Chain::Chain(std::string dataDir, int nbToRead){
 		_dataDir = "./data/"; // Default
 	
 	_nbToRead = nbToRead;
+	_nbRead = 0;
 	
 	_blocks = new Block[_nbToRead];
 	_filename = _dataDir+"blk00000.dat"; // First file
@@ -163,6 +164,7 @@ void Chain::read(){
 			break;
 		}
 		curBlock++;
+		_nbRead++;
 	}
 }
 
@@ -213,11 +215,11 @@ void Chain::write(std::string output){
 
 
 void Chain::debug(){
-	for(int i = 0; i < _nbToRead; i++){
+	for(int i = 0; i < _nbRead; i++){
 		std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<std::endl;
 		std::cout<<"*******************************************************************************"<<std::endl;
 		std::cout<<"                                  ----------"<<std::endl;
-		std::cout<<"                                || BLOCK #"<<i<<" ||"<<std::endl;
+		std::cout<<std::dec<<"                                || BLOCK #"<<i<<" ||"<<std::endl;
 		std::cout<<"                                  ----------"<<std::endl;
 		std::cout<<std::endl;
 		std::cout<<"-----------------------------------METADATAs-----------------------------------"<<std::endl;
@@ -229,7 +231,7 @@ void Chain::debug(){
 		std::cout<<std::endl<<"-------------------------------------HEADER------------------------------------"<<std::endl;
 		std::cout<<std::hex<<"Version number : "<<_blocks[i].header.version<<std::endl;
 		std::cout<<std::hex<<"Previous block hash : ";
-		displayBytes(_blocks[i].header.prevHash, 32);
+		displayBytes(_blocks[i].header.prevHash, 32, true);
 		std::cout<<std::endl;
 		std::cout<<std::hex<<"Merkle root : ";
 		displayBytes(_blocks[i].header.merkleRoot, 32, true);
@@ -242,10 +244,11 @@ void Chain::debug(){
 		std::cout<<std::dec<<"Number of transactions : "<<_blocks[i].header.txCount<<std::endl;
 		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
 		std::cout<<std::endl;
+				
+		std::cout<<std::endl<<"--------------------------------------DATA-------------------------------------"<<std::endl;
 		for(unsigned int j = 0; j<_blocks[i].header.txCount; j++){
 			std::cout<<std::dec<<"Transaction n° "<<j+1<<std::endl;
 			std::cout<<std::dec<<"	Version : "<<_blocks[i].transactions[j].version<<std::endl;
-			std::cout<<std::dec<<"	AAA : "<<_blocks[i].transactions[j].inputCount<<std::endl;
 			for(unsigned int k = 0; k<_blocks[i].transactions[j].inputCount; k++){
 				std::cout<<std::dec<<"	Input n° "<<k+1<<std::endl;
 				std::cout<<std::hex<<"		Hash : ";
@@ -259,7 +262,6 @@ void Chain::debug(){
 				displayAsciBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
 				std::cout<<std::endl;
 				std::cout<<std::hex<<"		Sequence :"<<_blocks[i].transactions[j].inputs[k].sequence<<std::endl;
-				std::cout<<std::dec<<"	AAA : "<<_blocks[i].transactions[j].inputCount<<std::endl;
 			}
 			for(unsigned int k = 0; k<_blocks[i].transactions[j].outputCount; k++){
 				std::cout<<std::dec<<"	Output n° "<<k+1<<std::endl;
@@ -270,6 +272,18 @@ void Chain::debug(){
 				std::cout<<std::hex<<"		Script (Asci) : ";
 				displayAsciBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
 			}
+			std::cout<<"Locktime : "<<_blocks[i].transactions[j].lockTime<<std::endl;
+		}
+		std::cout<<std::endl<<"-------------------------------------------------------------------------------"<<std::endl;
+		std::cout<<std::endl<<std::endl<<std::endl;
+		std::cout<<"*******************************************************************************"<<std::endl;
+		std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<std::endl;
+		if(i < _nbRead-1){
+			std::cout<<"                                       |"<<std::endl;
+			std::cout<<"                                       |"<<std::endl;
+			std::cout<<"                                       |"<<std::endl;
+			std::cout<<"                                       |"<<std::endl;
+			std::cout<<"                                       |"<<std::endl;
 		}
 	}
 }

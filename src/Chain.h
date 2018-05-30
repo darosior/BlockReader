@@ -61,6 +61,7 @@ class Chain{
 	
 		std::string _dataDir; // Directory from which to load the blocks
 		int _nbToRead; // Number of blocks to read
+		int _nbRead; // Number of blocks already read
 		std::string _outFile; // File to write
 		Block * _blocks;
 		std::string _filename; // Current file to read

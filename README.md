@@ -9,7 +9,7 @@ A result.txt : an example of the result for the reading of the first 150 blocks.
 
 ## Usage   
 ```shell
-./reader.bin "directory which contains binaries" "nb of blocks to read" "output file"OR"true" #true for debug  
+./reader.bin "directory which contains binaries" "nb of blocks to read" <"output file"|"true"> #true for debug  
 ```
 
 **_Not finished yet._**

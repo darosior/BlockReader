@@ -93,18 +93,12 @@ void Chain::read(){
 				_blocks[curBlock].header.merkleRoot = new uint8_t[32];
 				
 				f.read((char*)& _blocks[curBlock].header.magicBytes, 4);
-				std::cout<<f.tellg()<<std::endl;
 				f.read((char*)& _blocks[curBlock].header.blockLength, 4);
-				std::cout<<f.tellg()<<std::endl;
 				_curPos = f.tellg(); // To compare length of block with length of remaining data, see below
 				f.read((char*)& _blocks[curBlock].header.version, 4);
-				std::cout<<f.tellg()<<std::endl;
 				f.read((char*) _blocks[curBlock].header.prevHash, 32);
-				std::cout<<f.tellg()<<std::endl;
 				f.read((char*) _blocks[curBlock].header.merkleRoot, 32);
-				std::cout<<f.tellg()<<std::endl;
 				f.read((char*)& _blocks[curBlock].header.timestamp, 4);
-				std::cout<<f.tellg()<<std::endl;
 				f.read((char*)& _blocks[curBlock].header.target, 4);
 				f.read((char*)& _blocks[curBlock].header.nonce, 4);
 				_blocks[curBlock].header.txCount = readVarInt(f);
@@ -242,61 +236,62 @@ void Chain::write(std::string output){
 	if(f.is_open()){
 		for(int i = 0; i < _nbRead; i++){
 			f<<std::dec<<"BLOCK #"<<i<<" : {"<<std::endl;
-			f<<std::hex<<"	Magic byte : \""<<_blocks[i].header.magicBytes<<"\";"<<std::endl;
-			f<<std::dec<<"	Nb of bytes : \""<<_blocks[i].header.blockLength<<"\";"<<std::endl;
+			f<<std::hex<<"	Magic byte : \""<<_blocks[i].header.magicBytes<<"\","<<std::endl;
+			f<<std::dec<<"	Nb of bytes : \""<<_blocks[i].header.blockLength<<"\","<<std::endl;
 			f<<"	header : {"<<std::endl;
-			f<<std::hex<<"		Version number : "<<_blocks[i].header.version<<"\";"<<std::endl;
+			f<<std::hex<<"		Version number : "<<_blocks[i].header.version<<"\","<<std::endl;
 			f<<std::hex<<"		Previous block hash : \"";
 			displayBytes2File(f, _blocks[i].header.prevHash, 32, true);
-			f<<"\";"<<std::endl;
+			f<<"\","<<std::endl;
 			f<<std::hex<<"		Merkle root : \"";
 			displayBytes2File(f, _blocks[i].header.merkleRoot, 32, true);
-			f<<"\";"<<std::endl;
+			f<<"\","<<std::endl;
 			time_t t = 0;
 			t += _blocks[i].header.timestamp;
 			f<<std::dec<<"		Timestamp : \""<<asctime(localtime(&t)); //No need to std::endl after asctime
-			f<<std::hex<<"		Target : \""<<_blocks[i].header.target<<"\";"<<std::endl;
-			f<<std::dec<<"		Nonce : \""<<_blocks[i].header.nonce<<"\";"<<std::endl;
-			f<<std::dec<<"		Number of transactions : \""<<_blocks[i].header.txCount<<"\";"<<std::endl;
-			f<<"	};"<<std::endl;
+			f<<std::hex<<"		Target : \""<<_blocks[i].header.target<<"\","<<std::endl;
+			f<<std::dec<<"		Nonce : \""<<_blocks[i].header.nonce<<"\","<<std::endl;
+			f<<std::dec<<"		Number of transactions : \""<<_blocks[i].header.txCount<<"\","<<std::endl;
+			f<<"	},"<<std::endl;
 					
 			f<<"	Transactions : {"<<std::endl;
 			for(unsigned int j = 0; j<_blocks[i].header.txCount; j++){
 				f<<std::dec<<"		Transaction n° "<<j+1<<" : {"<<std::endl;
-				f<<std::dec<<"			Version : \""<<_blocks[i].transactions[j].version<<"\";"<<std::endl;
+				f<<std::dec<<"			Version : \""<<_blocks[i].transactions[j].version<<"\","<<std::endl;
 				for(unsigned int k = 0; k<_blocks[i].transactions[j].inputCount; k++){
 					f<<std::dec<<"			Input n° "<<k+1<<" : {"<<std::endl;
 					f<<std::hex<<"				Hash : \"";
 					displayBytes2File(f, _blocks[i].transactions[j].inputs[k].hash, 32);
-					f<<"\";"<<std::endl;
-					f<<std::hex<<"				Index : \""<<_blocks[i].transactions[j].inputs[k].index<<"\";"<<std::endl;
+					f<<"\","<<std::endl;
+					f<<std::hex<<"				Index : \""<<_blocks[i].transactions[j].inputs[k].index<<"\","<<std::endl;
 					f<<std::dec<<"				Script : \"";
 					displayBytes2File(f, _blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
-					f<<"\";"<<std::endl;
+					f<<"\","<<std::endl;
 					f<<std::hex<<"				Script (Asci) : \"";
 					displayAsciBytes2File(f, _blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
-					f<<"\";"<<std::endl;
-					f<<std::hex<<"				Sequence : \""<<_blocks[i].transactions[j].inputs[k].sequence<<"\";"<<std::endl;
-					f<<"			};"<<std::endl;
+					f<<"\","<<std::endl;
+					f<<std::hex<<"				Sequence : \""<<_blocks[i].transactions[j].inputs[k].sequence<<"\","<<std::endl;
+					f<<"			},"<<std::endl;
 				}
 				for(unsigned int k = 0; k<_blocks[i].transactions[j].outputCount; k++){
 					f<<std::dec<<"			Output n° "<<k+1<<" : {"<<std::endl;
-					f<<std::dec<<"				Value : \""<<_blocks[i].transactions[j].outputs[k].value<<"\";"<<std::endl;
+					f<<std::dec<<"				Value : \""<<_blocks[i].transactions[j].outputs[k].value<<"\","<<std::endl;
 					f<<std::dec<<"		Script : \"";
 					displayBytes2File(f, _blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
-					f<<"\";"<<std::endl;
+					f<<"\","<<std::endl;
 					f<<std::hex<<"		Script (Asci) : \"";
 					displayAsciBytes2File(f, _blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
-					f<<"\";"<<std::endl;
-					f<<"			};"<<std::endl;
+					f<<"\","<<std::endl;
+					f<<"			},"<<std::endl;
 				}
-				f<<"			Locktime : \""<<_blocks[i].transactions[j].lockTime<<"\";"<<std::endl;
-				f<<"		};"<<std::endl;
+				f<<"			Locktime : \""<<_blocks[i].transactions[j].lockTime<<"\","<<std::endl;
+				f<<"		},"<<std::endl;
 			}
-			f<<"	};"<<std::endl;
-			f<<"};"<<std::endl;
+			f<<"	}"<<std::endl;
+			f<<"}"<<std::endl;
 			f<<std::endl;
 		}
+		f.close();
 	}
 	else{
 		f<<"Problem with output file"<<std::endl;

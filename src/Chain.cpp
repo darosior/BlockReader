@@ -126,14 +126,14 @@ void Chain::read(){
 						// For each input
 						for(unsigned int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
 							_blocks[curBlock].transactions[i].inputs[j].hash = new uint8_t[32];
-							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].hash, 32);
+							f.read((char*) _blocks[curBlock].transactions[i].inputs[j].hash, 32);
 							
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].index, 4);
 							
 							_blocks[curBlock].transactions[i].inputs[j].scriptLength = readVarInt(f);
 							_blocks[curBlock].transactions[i].inputs[j].script = new uint8_t[_blocks[curBlock].transactions[i].inputs[j].scriptLength];
 							
-							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].script, _blocks[curBlock].transactions[i].inputs[j].scriptLength);
+							f.read((char*) _blocks[curBlock].transactions[i].inputs[j].script, _blocks[curBlock].transactions[i].inputs[j].scriptLength);
 							f.read((char*)& _blocks[curBlock].transactions[i].inputs[j].sequence, 4);
 						}
 						// For each output
@@ -145,7 +145,7 @@ void Chain::read(){
 							_blocks[curBlock].transactions[i].outputs[j].scriptLength = readVarInt(f);
 							_blocks[curBlock].transactions[i].outputs[j].script = new uint8_t[_blocks[curBlock].transactions[i].outputs[j].scriptLength];
 							
-							f.read((char*)& _blocks[curBlock].transactions[i].outputs[j].script, _blocks[curBlock].transactions[i].outputs[j].scriptLength);
+							f.read((char*) _blocks[curBlock].transactions[i].outputs[j].script, _blocks[curBlock].transactions[i].outputs[j].scriptLength);
 						}
 						// And finally the lock time
 						f.read((char*)& _blocks[curBlock].transactions[i].lockTime, 4);
@@ -251,14 +251,14 @@ void Chain::debug(){
 				std::cout<<std::hex<<"		Hash : ";
 				displayBytes(_blocks[i].transactions[j].inputs[k].hash, 32);
 				std::cout<<std::endl;
-				std::cout<<std::hex<<"		Index : "<<_blocks[i].transactions[j].inputs[k].index<<std::endl;/*
+				std::cout<<std::hex<<"		Index : "<<_blocks[i].transactions[j].inputs[k].index<<std::endl;
 				std::cout<<std::dec<<"		Script : ";
 				displayBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
 				std::cout<<std::endl;
 				std::cout<<std::hex<<"		Script (Asci) : ";
 				displayAsciBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
 				std::cout<<std::endl;
-				std::cout<<std::hex<<"		Sequence :"<<_blocks[i].transactions[j].inputs[k].sequence<<std::endl;*/
+				std::cout<<std::hex<<"		Sequence :"<<_blocks[i].transactions[j].inputs[k].sequence<<std::endl;
 				std::cout<<std::dec<<"	AAA : "<<_blocks[i].transactions[j].inputCount<<std::endl;
 			}
 			for(unsigned int k = 0; k<_blocks[i].transactions[j].outputCount; k++){

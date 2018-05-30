@@ -47,6 +47,24 @@ class Chain{
 		void displayAsciBytes(uint8_t bytes[], uint32_t size, bool be = false);
 		
 		/**
+		*@brief write all bytes the tab contains to the file
+		*@param file -> the output file
+		*@param bytes -> a tab of bytes
+		*@param size -> nb of bytes
+		*@param be -> if set to true, for big endians
+		*/
+		void displayBytes2File(std::ofstream &f, uint8_t bytes[], uint32_t size, bool be = false);
+		
+		/**
+		*@brief writing all bytes the tab contains to the file, but trying to convert them as character (using ASCI table) if it's impossible, displays "."
+		*@param bytes -> a tab of bytes
+		*@param size -> nb of bytes
+		*@param be -> if set to true, for big endians
+		*/
+		void displayAsciBytes2File(std::ofstream &f, uint8_t bytes[], uint32_t size, bool be = false);
+		
+		
+		/**
  		*@brief Writes the blocks specifications in output file
 		*@param output the file to write
 		*/

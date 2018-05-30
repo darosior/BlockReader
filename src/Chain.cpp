@@ -183,12 +183,6 @@ void Chain::displayBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/){
 	}
 }
 
-/**
-*@brief display all bytes the tab contains, but trying to convert them as character (using ASCI table) if it's impossible, displays "."
-*@param bytes -> a tab of bytes
-*@param size -> nb of bytes
-*@param be -> if set to true, for big endians
-*/
 void Chain::displayAsciBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/){
 	if(!be){
 		for(uint8_t i = 0; i < size; i++){
@@ -209,6 +203,40 @@ void Chain::displayAsciBytes(uint8_t bytes[], uint32_t size, bool be /*= false*/
 	}
 }
 
+void Chain::displayBytes2File(std::ofstream &f, uint8_t bytes[], uint32_t size, bool be /*= false*/){
+	if(!be){
+		for(uint32_t i = 0; i < size; i++){
+			f<<std::hex<<(int)bytes[i];
+		}
+	}
+	//If big endian
+	else{
+		for(int32_t i = size; i >= 0; i--){
+			f<<std::hex<<(int)bytes[i];
+		}
+	}
+}
+
+void Chain::displayAsciBytes2File(std::ofstream &f, uint8_t bytes[], uint32_t size, bool be /*= false*/){
+	if(!be){
+		for(uint32_t i = 0; i < size; i++){
+			if(bytes[i] <= 126  && bytes[i] >= 32)
+				f<<std::hex<<bytes[i];
+			else
+				f<<".";
+		}
+	}
+	//If big endian
+	else{
+		for(int32_t i = size; i >= 0; i--){
+			if(bytes[i] <= 126  && bytes[i] >= 32)
+				f<<std::hex<<bytes[i];
+			else
+				f<<".";
+		}
+	}
+}
+
 void Chain::write(std::string output){
 	std::ofstream f(output, std::ios::out);
 	if(f.is_open()){
@@ -219,10 +247,10 @@ void Chain::write(std::string output){
 			f<<"	header : {"<<std::endl;
 			f<<std::hex<<"		Version number : "<<_blocks[i].header.version<<"\";"<<std::endl;
 			f<<std::hex<<"		Previous block hash : \"";
-			displayBytes(_blocks[i].header.prevHash, 32, true);
+			displayBytes2File(f, _blocks[i].header.prevHash, 32, true);
 			f<<"\";"<<std::endl;
 			f<<std::hex<<"		Merkle root : \"";
-			displayBytes(_blocks[i].header.merkleRoot, 32, true);
+			displayBytes2File(f, _blocks[i].header.merkleRoot, 32, true);
 			f<<"\";"<<std::endl;
 			time_t t = 0;
 			t += _blocks[i].header.timestamp;
@@ -230,7 +258,7 @@ void Chain::write(std::string output){
 			f<<std::hex<<"		Target : \""<<_blocks[i].header.target<<"\";"<<std::endl;
 			f<<std::dec<<"		Nonce : \""<<_blocks[i].header.nonce<<"\";"<<std::endl;
 			f<<std::dec<<"		Number of transactions : \""<<_blocks[i].header.txCount<<"\";"<<std::endl;
-			f<<<<"	};"<<std::endl;
+			f<<"	};"<<std::endl;
 					
 			f<<"	Transactions : {"<<std::endl;
 			for(unsigned int j = 0; j<_blocks[i].header.txCount; j++){
@@ -239,15 +267,15 @@ void Chain::write(std::string output){
 				for(unsigned int k = 0; k<_blocks[i].transactions[j].inputCount; k++){
 					f<<std::dec<<"			Input n° "<<k+1<<" : {"<<std::endl;
 					f<<std::hex<<"				Hash : \"";
-					displayBytes(_blocks[i].transactions[j].inputs[k].hash, 32);
-					f<<std::endl;
+					displayBytes2File(f, _blocks[i].transactions[j].inputs[k].hash, 32);
+					f<<"\";"<<std::endl;
 					f<<std::hex<<"				Index : \""<<_blocks[i].transactions[j].inputs[k].index<<"\";"<<std::endl;
 					f<<std::dec<<"				Script : \"";
-					displayBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
-					f<<std::endl;
+					displayBytes2File(f, _blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
+					f<<"\";"<<std::endl;
 					f<<std::hex<<"				Script (Asci) : \"";
-					displayAsciBytes(_blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
-					f<<std::endl;
+					displayAsciBytes2File(f, _blocks[i].transactions[j].inputs[k].script, _blocks[i].transactions[j].inputs[k].scriptLength);
+					f<<"\";"<<std::endl;
 					f<<std::hex<<"				Sequence : \""<<_blocks[i].transactions[j].inputs[k].sequence<<"\";"<<std::endl;
 					f<<"			};"<<std::endl;
 				}
@@ -255,10 +283,11 @@ void Chain::write(std::string output){
 					f<<std::dec<<"			Output n° "<<k+1<<" : {"<<std::endl;
 					f<<std::dec<<"				Value : \""<<_blocks[i].transactions[j].outputs[k].value<<"\";"<<std::endl;
 					f<<std::dec<<"		Script : \"";
-					displayBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
-					f<<std::endl;
+					displayBytes2File(f, _blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+					f<<"\";"<<std::endl;
 					f<<std::hex<<"		Script (Asci) : \"";
-					displayAsciBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+					displayAsciBytes2File(f, _blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+					f<<"\";"<<std::endl;
 					f<<"			};"<<std::endl;
 				}
 				f<<"			Locktime : \""<<_blocks[i].transactions[j].lockTime<<"\";"<<std::endl;
@@ -267,6 +296,7 @@ void Chain::write(std::string output){
 			f<<"	};"<<std::endl;
 			f<<"};"<<std::endl;
 			f<<std::endl;
+		}
 	}
 	else{
 		f<<"Problem with output file"<<std::endl;

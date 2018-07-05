@@ -1,5 +1,13 @@
 #include "Chain.h"
 
+#ifndef SAFE_DELETE
+#define SAFE_DELETE(p) { if(p) { delete (p); (p) = NULL; } }
+#endif
+
+#ifndef SAFE_DELETE_ARRAY
+#define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p); (p) = NULL; } }
+#endif
+
 Chain::Chain(std::string dataDir, int nbToRead){
 	if(dataDir.length() > 0)
 		_dataDir = dataDir+"/";
@@ -20,18 +28,22 @@ Chain::~Chain(){
 	for(int i = 0; i < _nbToRead; i++){
 		for(int j = 0; j < _blocks[i].header.txCount; j++){
 			for(int k = 0; k < _blocks[i].transactions[j].inputCount; k++){
-				delete[] _blocks[i].transactions[j].inputs[k].hash;
-				delete[] _blocks[i].transactions[j].inputs[k].script;
+				SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs[k].hash);
+				SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs[k].script);
 			}
 			for(int k = 0; k < _blocks[i].transactions[j].outputCount; k++){
-				delete[] _blocks[i].transactions[j].outputs[k].script;
+				//displayBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
+				std::cout<<k<<std::endl;
+				//SAFE_DELETE_ARRAY(_blocks[i].transactions[j].outputs[k].script);//AA
 			}
-			delete[] _blocks[i].transactions[j].inputs;
-			delete[] _blocks[i].transactions[j].outputs;
+			SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs);
+			//SAFE_DELETE_ARRAY(_blocks[i].transactions[j].outputs);//AA
 		}
-		delete[] _blocks[i].header.prevHash;
-		delete[] _blocks[i].header.merkleRoot;
+		SAFE_DELETE_ARRAY(_blocks[i].transactions);
+		SAFE_DELETE_ARRAY(_blocks[i].header.prevHash);
+		SAFE_DELETE_ARRAY(_blocks[i].header.merkleRoot);
 	}
+	SAFE_DELETE_ARRAY(_blocks);
 }
 
 
@@ -93,6 +105,15 @@ void Chain::read(){
 				_blocks[curBlock].header.merkleRoot = new uint8_t[32];
 				
 				f.read((char*)& _blocks[curBlock].header.magicBytes, 4);
+				int l = 4; //solution degeulasse
+				while(_blocks[curBlock].header.magicBytes != 0xd9b4bef9 && l < length){
+					f.read((char*)& _blocks[curBlock].header.magicBytes, 4);
+					l+=4;
+				}
+				if(l >= length){
+					f.close();
+					break;
+				}
 				f.read((char*)& _blocks[curBlock].header.blockLength, 4);
 				_curPos = f.tellg(); // To compare length of block with length of remaining data, see below
 				f.read((char*)& _blocks[curBlock].header.version, 4);
@@ -147,13 +168,15 @@ void Chain::read(){
 					}
 				}
 				else{
-				
+					f.close();
+					break;
 				}
 
 				_curPos = f.tellg();
 			}
 			else{
-				//We need to take what we can..
+				f.close();
+				break;
 			}
 			break;
 		}

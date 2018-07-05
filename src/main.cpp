@@ -18,7 +18,7 @@ using namespace std;
 
 int main(int argc, char * argv[]){
 	if(!(argc == 4)){
-		cout<<"usage : ./"<<argv[0]<<" <blockDir> <nb of blocks to read> [<output file> / <debug=false>]"<<endl;
+		cout<<"usage : ./"<<argv[0]<<" <blockDir> <nb of blocks to read> [<output file> / <debug>]"<<endl;
 		cout<<"Examples : "<<argv[0]<<" /path/to/data 10 true"<<endl;
 		cout<<"Examples : "<<argv[0]<<" /path/to/data 10 test.txt"<<endl;
 		return 0;
@@ -29,7 +29,7 @@ int main(int argc, char * argv[]){
 	// We read them
 	chain.read();
 	// And write / display them
-	if(strcmp(argv[3], "true") == 0 || strcmp(argv[3], "True") == 0){ //In this case, this is debug
+	if(strcmp(argv[3], "debug") == 0 || strcmp(argv[3], "Debug") == 0){ //In this case, this is debug
 		chain.debug();
 	}
 	else{ // This is an output file

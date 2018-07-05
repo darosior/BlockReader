@@ -1,0 +1,288 @@
+BLOCK #0 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "285",
+	header : {
+		Version number : 1",
+		Previous block hash : "000000000000000000000000000000000",
+		Merkle root : "04a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b",
+		Timestamp : "Sat Jan  3 19:15:05 2009
+		Target : "1d00ffff",
+		Nonce : "2083236893",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d14455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73",
+				Script (Asci) : ".......EThe Times 03/Jan/2009 Chancellor on brink of second bailout for banks",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "414678afdb0fe5548271967f1a67130b7105cd6a828e0399a67962e0ea1f61deb649f6bc3f4cef38c4f3554e51ec112de5c384df7bab8d578a4c702b6bf11d5fac",
+		Script (Asci) : "A.g....UH'.g..q0..\..(.9..yb...a..I..?L.8..U......\8M....W.Lp+k.._.",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #1 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "00000019d6689c85ae165831e934ff763ae46a2a6c172b3f1b6a8ce26f",
+		Merkle root : "0e3e2357e86b6cdb1f7b54c3a3a17b6714ee1fe68bebb44a74b1efd512098",
+		Timestamp : "Fri Jan  9 03:54:25 2009
+		Target : "1d00ffff",
+		Nonce : "2573394689",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d14",
+				Script (Asci) : ".......",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "41496b538e853519c726a2c91e61ec1160ae1390813a627c66fb8be7947be63c52da7589379515d4e0a64f8141781e62294721166bf621e73a82cbf2342c858eeac",
+		Script (Asci) : "A...8.SQ.rj,..........:b|f....{.<R.u.7...........".r.f.b.s.,.#B.X..",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #2 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "00000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048",
+		Merkle root : "09bfc92260312ce44e74ef369f5c66bbb85848f2eddd5a7a1cde251e54ccfdd5",
+		Timestamp : "Fri Jan  9 03:55:44 2009
+		Target : "1d00ffff",
+		Nonce : "1639830024",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d1b",
+				Script (Asci) : ".......",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "4147211a824f55b505228e4c3d5194c1fcfaa15a456abdf37f9b9d97a4040afc073dee6c89064984f3385237d92167c13e236446b417ab79a0fcae412ae3316b77ac",
+		Script (Asci) : "A.r..$.[PR(....L.....V..7...z@@..s....d.O.8R7.!g.>#dF...y...A*.1kw.",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #3 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "000006a625f6636b8bb6ac7b96a8d3705d1ace8b1a19da3fdcc99ddbd",
+		Merkle root : "0999e1c837c76a1b7fbb7e57baf87b3996f5ffefbf2a9b95dd890602272f644",
+		Timestamp : "Fri Jan  9 04:02:53 2009
+		Target : "1d00ffff",
+		Nonce : "1844305925",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d1e",
+				Script (Asci) : ".......",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "41494b9d3e76c5b1629ecf97fff95d7a4bbdac87cc26099ada28066c6ff1eb9191223cd897194a08dc2726c5747f1db49e8cf9e75dc3e3550ae9b3086f3cd5aaac",
+		Script (Asci) : "A.....l[.)..........|.`....f......#..q....'&.t.......u.>5P..0.o<...",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #4 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "0000082b515589a3fdf2d4baff403e6fbe035a5d9742c1cae6295464449",
+		Merkle root : "0df2b6fa2e5e9c8ed5eaf6a45c13753ec8c63282b2688322eba40cd98ea67a",
+		Timestamp : "Fri Jan  9 04:16:28 2009
+		Target : "1d00ffff",
+		Nonce : "2850094635",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d11a",
+				Script (Asci) : ".......",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "414184f32b212815c6e522e666863243ff7e5bf8efb21f8b0614fb769e19131dd3134c54f37baa4db231c918106bb9fd43373e37ae31a0befc6ecaefb867ac",
+		Script (Asci) : "A..O2...\nR.fhc$...........aO.i........O7....1...k..C7>7.1...n...g.",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #5 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "000004ebadb55ee9096c9a2f888e9da59c0d68b1c228da88e48844a1485",
+		Merkle root : "063522845d294ee9b188ae5cac91bf389ac3723f084ca1025e7d9cdfe481ce1",
+		Timestamp : "Fri Jan  9 04:23:48 2009
+		Target : "1d00ffff",
+		Nonce : "2011431709",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d120",
+				Script (Asci) : "...... ",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "41456579536d150fbce94ee62b47db2ca43afa73a467ba55c79e2a7ec9ce4ad297e35cdbb8e42a4643a6eef7c9abee2f5822f86b1da242d9c231c431facfd8ac",
+		Script (Asci) : "A.VW.6.P....b.}..C..s..g.U..*~..J...\...*FC...|...../...$-.#..1....",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #6 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "000009b7262315dbf71787ad365697b892abffd1f95a1a022f896f533fc",
+		Merkle root : "020251a76e64e92e58291a30d4b212939aae976baca4e70818ceaa596fb9d37",
+		Timestamp : "Fri Jan  9 04:29:49 2009
+		Target : "1d00ffff",
+		Nonce : "2538380312",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d123",
+				Script (Asci) : "......#",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "4148ce279174b34c77c7b2043e3f3d45a588b85ef4ca46674f848ead7fb498f0a795c982552fdfa41616a7c0333a269d62108588e260fd5a48ac8e4dbf49e2bcac",
+		Script (Asci) : "A...'.t.L.|{ C...ZX...L.ft............U/......3:&.b....`.ZH..M.I...",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #7 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "000003031a0e7373569c5a1ff2a4be82553b2a12b776fbd3a215dc8f778d",
+		Merkle root : "08aa673bc752f2851fd645d6aa92917e96708307d9c1684f9423b10540673f",
+		Timestamp : "Fri Jan  9 04:39:29 2009
+		Target : "1d00ffff",
+		Nonce : "2258412857",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d12b",
+				Script (Asci) : "......+",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "414a59e64c774923d03fae7491b2a7f75d6b7aa3f3566a8ff1cf06cd3317d16a41aa16928b1df1f631f31f28c7da35d4edad3603adb2338c4d4dd268f3153555ac",
+		Script (Asci) : "A...d.t.=.?.t....]kz..V.....l.1}....i(...c.1..}.]N..`:.#8...&.1S.U.",
+			},
+			Locktime : "0",
+		},
+	}
+}
+
+BLOCK #8 : {
+	Magic byte : "d9b4bef9",
+	Nb of bytes : "215",
+	header : {
+		Version number : 1",
+		Previous block hash : "0000071966c2b1d65fd446b1e485b2c9d9594acd207ccbd5441cfc89444",
+		Merkle root : "0a6f7f1c0dad0f2eb6b13c4f33de664b1b0e9f22efad5994a6d5b6086d85e85e3",
+		Timestamp : "Fri Jan  9 04:45:43 2009
+		Target : "1d00ffff",
+		Nonce : "1716931356",
+		Number of transactions : "1",
+	},
+	Transactions : {
+		Transaction n° 1 : {
+			Version : "1",
+			Input n° 1 : {
+				Hash : "00000000000000000000000000000000",
+				Index : "ffffffff",
+				Script : "4ffff01d12c",
+				Script (Asci) : "......,",
+				Sequence : "ffffffff",
+			},
+			Output n° 1 : {
+				Value : "5000000000",
+		Script : "414cc8d85f5e7933cb18f13b97d165e1189c1fb3e9c98b0dd5446b2a1989883ff9e74a8a75da99cc59a21016caf7a7afd3e4e9e7952983e18d1ff7529d62eba1ac",
+		Script (Asci) : "A.......<....}.^....>....TF.......t..u...Y............)......).....",
+			},
+			Locktime : "0",
+		},
+	}
+}
+

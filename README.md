@@ -9,15 +9,12 @@ A result.txt : an example of the result for the reading of the first 150 blocks.
 
 ## Usage   
 ```shell
-./reader.bin "directory which contains binaries" "nb of blocks to read" <"output file"|"debug">
+./reader.bin "directory which contains binaries" <"output file"|"debug"> "nb of blocks to read" ("starting block")
 ```
 If you specify debug as output File, result will be printed on the prompt.  
+If you specify a starting block, results will be __printed__ from this block. Caution : as far as it is not possible to know the length of each before reading it, the program will read each block __even if you sepcify a starting one__ -> it could take a while if you specify a high-heighted block.
   
   
-  
-**_Not finished yet._**
 
 #### To do
-Compute Hash for inputs  
-Compute Difficulty from target  
-Handle the case where the first part of a block is in file blk000(n) and the second in blk000(n+1)
+(Compute Difficulty from target)  

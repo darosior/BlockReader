@@ -67,8 +67,9 @@ class Chain{
 		/**
  		*@brief Writes the blocks specifications in output file
 		*@param output the file to write
+		*@param startingBlock start writing result from this block
 		*/
-		void write(std::string output);	
+		void write(std::string output, int startingBlock = 0);	
 		
 		/**
  		*@brief Writes the blocks specifications to the console

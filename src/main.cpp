@@ -17,15 +17,16 @@ using namespace std;
 */
 
 int main(int argc, char * argv[]){
-	if(!(argc == 4)){
-		cout<<"usage : "<<argv[0]<<" <blockDir> <nb of blocks to read> [<output file> / <debug>]"<<endl;
-		cout<<"Examples : "<<argv[0]<<" /path/to/data 10 debug"<<endl;
-		cout<<"Examples : "<<argv[0]<<" /path/to/data 10 test.txt"<<endl;
+	if(!(argc == 4) && !(argc == 5)){
+		cout<<"usage : "<<argv[0]<<" <blockDir> [<output file> / <debug>] <nb of blocks to read> (<starting block>)"<<endl;
+		cout<<"Examples : "<<argv[0]<<" /path/to/data debug 10"<<endl;
+		cout<<"           "<<argv[0]<<" /path/to/data test.txt 34"<<endl;
+		cout<<"           "<<argv[0]<<" /path/to/data test.txt 100 1200"<<endl;
 		return 0;
 	}
 	
 	// We create an instance of the chain reader with the correct folder and number of blocks to read
-	Chain chain(argv[1], atoi(argv[2]));
+	Chain chain(argv[1], atoi(argv[3]));
 	// We read them
 	chain.read();
 	// And write / display them
@@ -33,7 +34,10 @@ int main(int argc, char * argv[]){
 		chain.debug();
 	}
 	else{ // This is an output file
-		chain.write(argv[3]);
+		if(argc == 5)
+			chain.write(argv[2], atoi(argv[4]));
+		else
+			chain.write(argv[2]);
 	}
 
 	return 0;

@@ -249,10 +249,10 @@ void Chain::displayAsciBytes2File(std::ofstream &f, uint8_t bytes[], uint32_t si
 	}
 }
 
-void Chain::write(std::string output){
+void Chain::write(std::string output, int startingBlock/*= 0*/){
 	std::ofstream f(output, std::ios::out);
 	if(f.is_open()){
-		for(int i = 0; i < _nbRead; i++){
+		for(int i = startingBlock; i < _nbRead; i++){
 			f<<std::dec<<"BLOCK #"<<i<<" : {"<<std::endl;
 			f<<std::hex<<"	Magic byte : \""<<_blocks[i].header.magicBytes<<"\","<<std::endl;
 			f<<std::dec<<"	Nb of bytes : \""<<_blocks[i].header.blockLength<<"\","<<std::endl;

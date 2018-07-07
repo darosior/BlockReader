@@ -26,18 +26,18 @@ Chain::Chain(std::string dataDir, int nbToRead){
 Chain::~Chain(){
 	//To delete the memory allocated
 	for(int i = 0; i < _nbToRead; i++){
-		for(int j = 0; j < _blocks[i].header.txCount; j++){
-			for(int k = 0; k < _blocks[i].transactions[j].inputCount; k++){
+		std::cout<<i<<std::endl;
+		for(unsigned int j = 0; j < _blocks[i].header.txCount; j++){
+			std::cout<<"	txCount : "<<j<<std::endl;
+			for(unsigned int k = 0; k < _blocks[i].transactions[j].inputCount; k++){
 				SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs[k].hash);
 				SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs[k].script);
 			}
-			for(int k = 0; k < _blocks[i].transactions[j].outputCount; k++){
-				//displayBytes(_blocks[i].transactions[j].outputs[k].script, _blocks[i].transactions[j].outputs[k].scriptLength);
-				std::cout<<k<<std::endl;
-				//SAFE_DELETE_ARRAY(_blocks[i].transactions[j].outputs[k].script);//AA
+			for(unsigned int k = 0; k < _blocks[i].transactions[j].outputCount; k++){
+				SAFE_DELETE_ARRAY(_blocks[i].transactions[j].outputs[k].script);
 			}
 			SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs);
-			//SAFE_DELETE_ARRAY(_blocks[i].transactions[j].outputs);//AA
+			SAFE_DELETE_ARRAY(_blocks[i].transactions[j].outputs);
 		}
 		SAFE_DELETE_ARRAY(_blocks[i].transactions);
 		SAFE_DELETE_ARRAY(_blocks[i].header.prevHash);
@@ -45,7 +45,6 @@ Chain::~Chain(){
 	}
 	SAFE_DELETE_ARRAY(_blocks);
 }
-
 
 void Chain::set_fileName(){
 	if(_curFile < 10)
@@ -91,7 +90,7 @@ uint64_t Chain::readVarInt(std::ifstream &f){
 
 void Chain::read(){
 	int curBlock = 0;
-	while(curBlock < _nbToRead - 1){ // -1 -> first block is 0
+	while(curBlock < _nbToRead){
 		std::ifstream f(_filename, std::ios::in | std::ios::binary | std::ios::ate);
 		while(f.is_open()){
 			//To get the size of the remaining part of the file
@@ -105,15 +104,11 @@ void Chain::read(){
 				_blocks[curBlock].header.merkleRoot = new uint8_t[32];
 				
 				f.read((char*)& _blocks[curBlock].header.magicBytes, 4);
-				int l = 4; //solution degeulasse
-				while(_blocks[curBlock].header.magicBytes != 0xd9b4bef9 && l < length){
+				while(_blocks[curBlock].header.magicBytes != 0xd9b4bef9 && !f.eof()){
 					f.read((char*)& _blocks[curBlock].header.magicBytes, 4);
-					l+=4;
 				}
-				if(l >= length){
-					f.close();
+				if(f.eof())
 					break;
-				}
 				f.read((char*)& _blocks[curBlock].header.blockLength, 4);
 				_curPos = f.tellg(); // To compare length of block with length of remaining data, see below
 				f.read((char*)& _blocks[curBlock].header.version, 4);
@@ -155,7 +150,7 @@ void Chain::read(){
 						// For each output
 						_blocks[curBlock].transactions[i].outputCount = readVarInt(f);
 						_blocks[curBlock].transactions[i].outputs = new Output[_blocks[curBlock].transactions[i].outputCount];
-						for(unsigned int j = 0; j<_blocks[curBlock].transactions[i].inputCount; j++){
+						for(unsigned int j = 0; j<_blocks[curBlock].transactions[i].outputCount; j++){
 							f.read((char*)& _blocks[curBlock].transactions[i].outputs[j].value, 8);
 							
 							_blocks[curBlock].transactions[i].outputs[j].scriptLength = readVarInt(f);

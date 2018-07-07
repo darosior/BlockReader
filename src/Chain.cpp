@@ -26,9 +26,7 @@ Chain::Chain(std::string dataDir, int nbToRead){
 Chain::~Chain(){
 	//To delete the memory allocated
 	for(int i = 0; i < _nbToRead; i++){
-		std::cout<<i<<std::endl;
 		for(unsigned int j = 0; j < _blocks[i].header.txCount; j++){
-			std::cout<<"	txCount : "<<j<<std::endl;
 			for(unsigned int k = 0; k < _blocks[i].transactions[j].inputCount; k++){
 				SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs[k].hash);
 				SAFE_DELETE_ARRAY(_blocks[i].transactions[j].inputs[k].script);
@@ -94,7 +92,7 @@ void Chain::read(){
 		std::ifstream f(_filename, std::ios::in | std::ios::binary | std::ios::ate);
 		while(f.is_open()){
 			//To get the size of the remaining part of the file
-			unsigned int length = f.tellg() - _curPos;
+			uint64_t length = f.tellg() - _curPos;
 			// Header max length = 96 bytes, cf doc (for the doc cf main.cpp or Readme.md)
 			if(length > 96){
 				//We can go, we set the cursor to the right position and we begin to read

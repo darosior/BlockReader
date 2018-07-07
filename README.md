@@ -18,3 +18,4 @@ If you specify a starting block, results will be __printed__ from this block. Ca
 
 #### To do
 (Compute Difficulty from target)  
+Read script opcodes
